@@ -1,5 +1,5 @@
 cd fig
-mpost plot.mp
+mpost -interaction=nonstopmode plot.mp
 cd ..
 
 pdflatex lsuwrapping.tex
