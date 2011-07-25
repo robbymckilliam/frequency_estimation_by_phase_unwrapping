@@ -20,8 +20,8 @@ def randparams = {
   (rand.nextDouble - 0.5, rand.nextDouble - 0.5)
 }
 
-val Ns = List(16,256,512,1024) //number of observations
-val iters = 10 //number of iterations to run for each variance
+val Ns = List(16,64,256,512,1024) //number of observations
+val iters = 1000 //number of iterations to run for each variance
 
 //range of signal to noise ratios
 val snrs = Range(-20, 21, 2)
@@ -48,7 +48,7 @@ for(N <- Ns ){
     val efname = est.getClass.getSimpleName + "" + N
     val efile = new java.io.FileWriter(Tfname)
 
-    println("var \t mse")
+    println("snr \t mse")
     val starttime = (new java.util.Date).getTime
     for(snr <- snrs){      
       siggen.setNoiseGenerator( new GaussianNoise(0, 0.5/scala.math.pow(10, snr/10.0)) )
