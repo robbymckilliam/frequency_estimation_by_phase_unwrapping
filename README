@@ -10,5 +10,5 @@ will build the pdf using this data.  The output pdf is called lsuwrapping.pdf.  
 
 sh runsimsandbuildeverything.sh
 
-You need a working java jvm and also Scala 2.8 or higher installed.  Depending on your machine this might take a while.  Probably a day or so because the least squares unwrapping estimator is quite slow.  Open up the bash script and work backwards to get at code.
+You need a working java jvm and also Scala 2.8 or higher installed.  Depending on your machine this might take a while.  Probably a day or so because the least squares unwrapping estimator is quite slow.  Open up the bash script and work backwards to get at the code.
 
