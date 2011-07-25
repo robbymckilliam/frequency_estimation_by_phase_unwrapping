@@ -2,13 +2,13 @@ Latex and simulation scripts for the paper:
 
 R. G. McKilliam, Barry G. Quinn, I. V. L. Clarkson, and Bill Moran. Frequency estimation by phase unwrapping. IEEE Trans. Signal Process., 58(6):2953-2963, June 2010.
 
-Data from the simulations already exists in this repository (the same data as used in the paper).  If you are using bash then
+Simulation data already exists in this repository (the same data as used in the paper).  If you are using bash then
 
 sh buildfigsandpdf.sh
 
-will build the pdf using this data.  The pdf is called lsuunwrapping.pdf.  If you want to run all the simulations again use
+will build the pdf using this data.  The output pdf is called lsuwrapping.pdf.  If you want to run all the simulations again use
 
 sh runsimsandbuildeverything.sh
 
-Depending on your machine this might take a while.  Probably a day or so because the least squares unwrapping estimator is quite slow.  Open up the bash script and work backwards to get at code.
+You need a working java jvm and also Scala 2.8 or higher installed.  Depending on your machine this might take a while.  Probably a day or so because the least squares unwrapping estimator is quite slow.  Open up the bash script and work backwards to get at code.
 
