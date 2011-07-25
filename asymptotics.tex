@@ -1,0 +1,566 @@
+\section{Asymptotic properties} \label{sec:asymptotic_properties}
+
+In this section the LSPUE is shown to be strongly consistent and its central
+limit theorem is derived.  The main result is Theorem \ref{thm:asymp_proof},
+the proof of which is given at the end of this section.  In what follows, order
+notation will always refer to behaviour as $N \rightarrow \infty$, and the
+notation $O_P \left( \cdot \right)$ will mean order in probability as $N
+\rightarrow \infty$.
+
+\begin{theorem} \label{thm:asymp_proof} Let $\left(
+    \widehat{f}_{N},\widehat{\theta}_{N}\right) $ be the minimiser of
+  \eqref{eq:sumofsquaresfunction} over $\left[
+    \nicefrac{-1}{2},\nicefrac{1}{2}\right)^2$. Then, $N\left(\widehat{f}_{N}-f_{0}\right)$ and $\widehat{\theta}_{N}-\theta_{0}$ converge almost surely to $0$ as $N\rightarrow\infty,$ and the distribution of
+\[
+\left[
+\begin{array}
+[c]{cc}%
+N^{3/2}\left(  \widehat{f}_{N}-f_{0}\right)  & N^{1/2}\left( \widehat{\theta}_{N}-\theta_{0} \right)%
+\end{array}
+\right]  ^{\prime}%
+\]
+converges to the normal with mean $0$ and covariance matrix%
+\[
+\frac{12\sigma^{2}}{\left(  1-h\right)  ^{2}}\left[
+\begin{array}
+[c]{cc}%
+1 & -\nicefrac{1}{2}\\
+-\nicefrac{1}{2} & \nicefrac{1}{3}
+\end{array}
+\right]  ,
+\]
+where $\sigma^{2}=\operatorname{var}X_{n}$ and $h=f_X \left(-1/2\right)$.
+\end{theorem}
+
+Substituting $\eqref{eq_polyphasemodel}$ into $SS\left( f,\theta\right) $ we
+obtain
+\begin{align*}
+&  \sum_{n=1}^{N}\fracpart{ \fracpart{ \theta_{0} + f_{0}n + X_{n} } - \theta - fn }
+^{2}\\
+&  =\sum_{n=1}^{N}\fracpart{  X_{n}+(f_0 - f)n + (\theta_0-\theta) }  ^{2}\\
+&  =\sum_{n=1}^{N}\fracpart{  X_{n}+\lambda n+\phi }  ^{2}\\
+&  =NS_{N}\left(  \lambda,\phi\right)  ,
+\end{align*}
+say, where $\lambda=f_{0}-f$ and $\phi=\theta_{0}-\theta$.  Note that $S_N$ is
+periodic with period $1$ in both $\lambda$ and $\phi$.  We may thus assume
+that $(\lambda, \phi) \in B$ where $B = [-\nicefrac{1}{2},
+\nicefrac{1}{2})^2$. Let $\widehat{\lambda}_{N}$ and $\widehat{\phi}_{N}$ be
+the minimisers of $S_{N}\left( \lambda,\phi\right)$.  We shall show that
+$N\widehat{\lambda}_{N}\rightarrow0$ and $\widehat{\phi}_{N}\rightarrow 0$
+almost surely as $N\rightarrow\infty$.  Put
+\begin{align*}
+V_{N}\left(  \lambda,\phi\right)   &  =S_{N}\left(  \lambda,\phi\right)
+-ES_{N}\left(  \lambda,\phi\right) \\
+&  =\frac{1}{N}\sum_{n=1}^{N}\left(  \fracpart{  X_{n}+\lambda n+\phi }
+^{2}-E\fracpart{  X_{n}+\lambda n+\phi }  ^{2}\right)  .
+\end{align*}
+Let $(\lambda_j, \phi_k)$ denote the point $\left(  \frac{j}{N^{b+1}} - \nicefrac{1}{2},\frac{k}{N^{b}} - \nicefrac{1}{2}\right)$, for some $b>0$ and let
+\begin{align*}
+B_{jk}= \left\{ \left(  x,y\right)  ; \frac{j}{N^{b+1}}\leq x + \nicefrac{1}{2}<\frac
+{j+1}{N^{b+1}}, \right. \\ \left. \frac{k}{N^{b}}\leq y + \nicefrac{1}{2} <\frac{k+1}{N^{b}} \right\}  .
+\end{align*}
+Then%
+\begin{align*}
+&\sup_{\left(  \lambda,\phi\right)  \in B}\left\vert V_{N}\left(  \lambda
+,\phi\right)  \right\vert \\  &=\sup_{j,k}\sup_{\left(  \lambda,\phi\right)
+\in B_{jk}}\left\vert V_{N}\left(  \lambda_{j},\phi_{k}\right) + V_{N}\left(
+\lambda,\phi\right)  -V_{N}\left(  \lambda_{j},\phi_{k}\right)  \right\vert \\
+&  \leq\sup_{j,k}\left\vert V_{N}\left(  \lambda_{j},\phi_{k}\right)
+\right\vert \\
+&+\sup_{j,k}\sup_{\left(  \lambda,\phi\right)  \in B_{jk}%
+}\left\vert V_{N}\left(  \lambda,\phi\right)  -V_{N}\left(  \lambda_{j}%
+,\phi_{k}\right)  \right\vert ,
+\end{align*}
+where $j = 0,1,\ldots,N^{b+1}-1$ and $k=0,1,\ldots,N^{b}-1$.
+
+\begin{lemma} \label{lem:supVjk}
+$\sup_{j,k}\left\vert V_{N}\left(  \lambda_{j},\phi_{k}\right)  \right\vert
+\rightarrow0,$ almost surely as $N\rightarrow\infty.$
+\end{lemma}
+
+\begin{IEEEproof}
+For any $\varepsilon>0$,
+\begin{align*}
+P\left(  \sup_{j,k}\left\vert V_{N}\left(  \lambda_{j},\phi_{k}\right)
+\right\vert >\varepsilon\right)   &  \leq\sum_{j,k}P\left(  \left\vert
+V_{N}\left(  \lambda_{j},\phi_{k}\right)  \right\vert >\varepsilon\right) \\
+&  \leq\sum_{j,k}\frac{E\left(  V_{N}^{2\beta}\left(  \lambda_{j},\phi
+_{k}\right)  \right)  }{\varepsilon^{2\beta}},
+\end{align*}
+by Markov's inequality, for any $\beta>0.$ Let%
+\[
+E\left(  V_{N}^{2\beta}\left(  \lambda,\phi\right)  \right)  =\frac
+{1}{N^{2\beta}}E\left(  \sum_{n=1}^{N}Z_{n}\right)  ^{2\beta},
+\]
+where each of%
+\[
+Z_{n}=\fracpart{  X_{n}+\lambda n+\phi }  ^{2}-E\fracpart{  X_{n}+\lambda
+n+\phi }  ^{2}%
+\]
+has mean $0$. In Lemma \ref{lem:zero_mean_indepent_sum_bound} in the appendix we show, for integers $\beta$, that
+\begin{equation}
+E\left(  \sum_{n=1}^{N}Z_{n}\right)  ^{2\beta}= O\left(N^\beta\right) . 
+\label{eq:markapp}%
+\end{equation}
+
+%\begin{equation}
+%E\left(  \sum_{n=1}^{N}Z_{n}\right)  ^{2\beta}=\sum_{n_{1},\ldots,n_{2\beta
+%}=1}^{N}E\left(  \prod\limits_{j=1}^{2\beta}Z_{n_{j}}\right)  .
+%\label{eq:markapp}%
+%\end{equation}
+%Since the terms%
+%\[
+%E\left(  \prod\limits_{j=1}^{2\beta}Z_{n_{j}}\right)
+%\]
+%in this containing any $n_{j}$ only once will have $0$ mean, and since the
+%$Z_{j}$ are bounded, it follows that%
+%\[
+%\frac{1}{N^{\beta}}E\left(  \sum_{n=1}^{N}Z_{n}\right)  ^{2\beta}=O\left(
+%1\right)  ,
+%\]
+%as $N\rightarrow\infty,$ the dominant terms coming from the $Z_{j}$ in
+%$\left(  \ref{eq:markapp}\right)  $ occurring in pairs. 
+Hence%
+\[
+P\left(  \sup_{j,k}\left\vert V_{N}\left(  \lambda_{j},\phi_{k}\right)
+\right\vert >\varepsilon\right)  =O\left(  N^{2b+1-\beta}\right)  ,
+\]
+and, since for any $b>0,$ we may choose $\beta$ so that $2b+1-\beta<-1,$ it
+follows that
+\[
+\sum_{N=1}^{\infty}P\left(  \sup_{j,k}\left\vert V_{N}\left(  \lambda_{j}%
+,\phi_{k}\right)  \right\vert >\varepsilon\right)  <\infty,
+\]
+and consequently from the Borel-Cantelli lemma that%
+\[
+\sup_{j,k}\left\vert V_{N}\left(  \lambda_{j},\phi_{k}\right)  \right\vert
+\rightarrow 0,
+\]
+almost surely as $N\rightarrow\infty.$
+\end{IEEEproof}
+
+\begin{lemma}
+$\sup_{j,k}\sup_{\left(  \lambda,\phi\right)  \in B_{jk}}\left\vert
+V_{N}\left(  \lambda,\phi\right)  -V_{N}\left(  \lambda_{j},\phi_{k}\right)
+\right\vert \rightarrow0,$ almost surely as $N\rightarrow\infty.$
+\end{lemma}
+
+\begin{IEEEproof}
+Let $a_n = X_{n}+\lambda n+\phi$ and $b_n = X_{n}+\lambda_{j}n+\phi
+_{k}$. For $\left(  \lambda,\phi\right)  \in B_{jk},$%
+\[
+\fracpart{  a_n }  =\fracpart{  b_n +\nu_{n} }  ,
+\]
+where 
+\[
+0 \leq\nu_{n} = a_n - b_n = \left(  \lambda-\lambda_{j}\right)  n+\left(  \phi-\phi_{k}\right) \leq2N^{-b}.
+\] 
+Thus
+\[
+\fracpart{  a_n }  =\fracpart{  b_n }  +\nu_{n}-\delta_{n},
+\]
+where%
+\[
+\delta_{n}=\left\{
+\begin{array}
+[c]{ccc}%
+0 & ; & \fracpart{  b_n }  +\nu_{n}<1/2\\
+1 & ; & \text{otherwise.}%
+\end{array}
+\right.
+\]
+Hence%
+\begin{align*}
+\fracpart{  a_n }  ^{2}-\fracpart{  b_n }^{2}
+& =\left(  \nu_{n}-\delta_{n}\right)  ^{2}+2\left(  \nu_{n}-\delta
+_{n}\right)  \fracpart{ b_n } \\
+& =\nu_{n}^{2}+2\nu_{n}\fracpart{  b_n }
+-\delta_{n}\left[  2\left(  \fracpart{  b_n }
++\nu_{n}\right)  -1\right]  ,
+\end{align*}
+since $\delta_{n}^{2}=\delta_{n}.$ Now, if $\delta_{n}=1,$%
+\[
+0  \leq 2\left(  \fracpart{  b_n }  +\nu_{n}\right)  -1  \leq2\nu_{n} \leq 4N^{-b}.
+\]
+Thus%
+\[
+0 \leq\frac{1}{N}\sum_{n=1}^{N}\delta_{n}\left[  2\left(  \fracpart{
+b_n }  +\nu_{n}\right)  -1\right] \leq4N^{-b},
+\]
+and so%
+\[
+0  \leq\frac{1}{N}E\sum_{n=1}^{N}\delta_{n}\left[  2\left(  \fracpart{
+b_n }  +\nu_{n}\right)  -1\right] 
+ \leq4N^{-b}.
+\]
+Also%
+\begin{align*}
+& \left\vert \nu_{n}^{2}+2\nu_{n}\fracpart{  b_n }  -E\left[  \nu_{n}^{2}+2\nu_{n}\fracpart{  b_n }  \right]  \right\vert \\
+&  \leq2\nu_{n}\left\vert \fracpart{  b_n }
+\right\vert +2E\nu_{n}\left\vert \fracpart{  b_n }
+\right\vert \\
+&  \leq4N^{-b}.
+\end{align*}
+Hence%
+\[
+\sup_{\left(  \lambda,\phi\right)  \in B_{jk}}\left\vert V_{N}\left(
+\lambda,\phi\right)  -V_{N}\left(  \lambda_{j},\phi_{k}\right)  \right\vert
+\leq12N^{-b},
+\]
+and the result follows as the bound does not depend on $j$ or $k$.
+\end{IEEEproof}
+
+\begin{theorem}
+\label{th:vn}$\sup_{\lambda,\phi}\left\vert V_{N}\left(  \lambda,\phi\right)
+\right\vert \rightarrow0,$ almost surely as $N\rightarrow\infty.$
+\end{theorem}
+
+\begin{IEEEproof}
+The proof follows immediately from the two previous lemmas.
+\end{IEEEproof}
+
+\begin{lemma}
+\label{lem:one} Let $g:[-\nicefrac{1}{2}, \nicefrac{1}{2})\rightarrow \reals$ be given by
+\[
+g\left(  x\right)  =E\fracpart{  X_{n}+x }  ^{2}-\sigma^{2}.
+\]
+Then $g\left(  x\right)  \geq0,$ with equality if and only if $
+x  = 0.$
+\end{lemma}
+
+\begin{IEEEproof}
+If $x\geq0,$%
+\begin{align*}
+g\left(  x\right)   & =\int_{-1/2}^{1/2-x}\left(  x+y\right)  ^{2}f_X\left(
+y\right)  dy \\
+&+\int_{1/2-x}^{1/2}\left(  x+y-1\right)  ^{2}f_X \left(  y\right)
+dy-\int_{-1/2}^{1/2}y^{2}f_X \left(  y\right)  dy\\
+&  =x^{2}+\int_{1/2-x}^{1/2}\left(  1-2x-2y\right)  f_X \left(  y\right)  dy,
+\end{align*}
+since $E\left(  X\right)  =0.$ Similarly, when $x<0,$%
+\[
+g\left(  x\right)  =x^{2}+\int_{-1/2}^{-1/2-x}\left(  1+2x+2y\right)
+f_X \left(  y\right)  dy  = g\left(  -x\right)
+\]
+and therefore $g$ is even. Now, since $f_X \left(  y\right)  $ is even, when $x\geq0,$%
+\begin{align*}
+g^{\prime}\left(  x\right)   &  =2x-2\left[  1-F_X \left(  \frac{1}{2}-x\right)
+\right] \\
+&  =2x-2F_X \left(  x-\frac{1}{2}\right).
+\end{align*}
+Since $f_X$ is symmetric and unimodal with mode at $0$, $F_X
+(-\nicefrac{1}{2})=0$, $F_X(0)=\nicefrac{1}{2}$ and $F_X(x - \nicefrac{1}{2})$
+is strictly convex on $[0, \nicefrac{1}{2})$.  It follows that $g$ is
+monotonically increasing on $[0, \nicefrac{1}{2})$ and, being even, is
+monotonically decreasing on $[-\nicefrac{1}{2}, 0)$.  Also $g(0) = 0$.  Thus
+$g\left( x\right) \geq0,$ with equality if and only if $x=0.$
+\end{IEEEproof}
+
+Let
+\begin{equation}
+\left(  \widehat{\lambda}_{N},\widehat{\phi}_{N}\right)  =\arg\min
+S_{N}\left(  \lambda,\phi\right)  \label{eq:lsest}%
+\end{equation}
+and put $\tau_{N}\left(  \lambda,\phi\right)  =ES_{N}\left(  \lambda
+,\phi\right)  .$ Now,%
+\[
+\tau_{N}\left(  \lambda,\phi\right)  -\sigma^{2}  =\frac{1}{N}\sum
+_{n=1}^{N}g\left(  \fracpart{  \lambda n+\phi }  \right)  \geq 0.
+\]
+Thus, since%
+\[
+S_{N}\left(  \widehat{\lambda}_{N},\widehat{\phi}_{N}\right)  \leq
+S_{N}\left(  0,0\right)  ,
+\]
+we have%
+\[
+V_{N}\left(  \widehat{\lambda}_{N},\widehat{\phi}_{N}\right)  +\tau_{N}\left(
+\widehat{\lambda}_{N},\widehat{\phi}_{N}\right)  \leq V_{N}\left(  0,0\right)
++\sigma^{2},
+\]
+and so%
+\[
+0  \leq\tau_{N}\left(  \widehat{\lambda}_{N},\widehat{\phi}_{N}\right)
+-\sigma^{2} \leq-V_{N}\left(  \widehat{\lambda}_{N},\widehat{\phi}_{N}\right)
++V_{N}\left(  0,0\right)  .
+\]
+However, from Theorem \ref{th:vn}, the right hand side converges almost surely
+to $0$ as $N\rightarrow\infty.$ Hence%
+\begin{equation}
+\tau_{N}\left(  \widehat{\lambda}_{N},\widehat{\phi}_{N}\right)  -\sigma
+^{2}\rightarrow0, \label{eq:taucon}%
+\end{equation}
+almost surely as $N\rightarrow\infty.$
+
+\begin{lemma}
+\label{lem:moran}Let $K$ be a subset of the integers $W_{N}=\left\{
+1,2,\ldots,N\right\}  $ for which $\#K>3N/4$ where $\#K$ is the cardinality of $K$. Then~\footnote{The notation $K-K$ should not be confused with set subtraction.}
+\[
+W_{N/2}\subset K-K=\left\{  k-k^{\prime};k,k^{\prime}\in K\right\}.
+\]
+
+\end{lemma}
+
+\begin{IEEEproof}
+Suppose this is not the case. Then there is some $r\in W_{N/2}$ for which
+$r\notin K-K,$ so that%
+\[
+K\cap\left(  K+r\right)  =\emptyset.
+\]
+Let $K_{N/2}=K\cap W_{N/2}.$ Then $\#K_{N/2}>N/4,$ and the same is true of
+$K\cap\left[  r+1,r+N/2\right]  .$ Since both $r+K_{N/2}$ and $K\cap\left[
+r+1,r+N/2\right]  $ are subsets of $\left[  r+1,r+N/2\right]  ,$ are disjoint,
+and each has more than $N/4$ elements, we have a contradiction.
+\end{IEEEproof}
+
+\begin{lemma} \label{lem:fracpartsumanddelta}
+Let $\left|\fracpart{a}\right| < \delta$ and $\left|\fracpart{b}\right| < \delta$.  Then $\left|\fracpart{a + b}\right| < 2\delta$.
+\end{lemma}
+\begin{IEEEproof}
+  If $\delta > \nicefrac{1}{4}$, the proof is trivial as $\left|\fracpart{a +
+    b}\right| \leq \nicefrac{1}{2}$ for all $a,b \in \reals$.  If $\delta
+  \leq \nicefrac{1}{4}$ then $\fracpart{a} + \fracpart{b} = \fracpart{a + b}$ and by the triangle
+  inequality
+\[
+\left|\fracpart{a + b}\right| = \left|\fracpart{a} + \fracpart{b}\right| \leq \left|\fracpart{a}\right| + \left|\fracpart{b}\right| < 2\delta.
+\] 
+\end{IEEEproof}
+
+\begin{lemma}
+  \label{lem:moran2}Suppose $\left( \lambda_{N}\right) $ and $\left( \phi
+    _{N}\right) $ are sequences with $\left( \lambda_{N},\phi_{N}\right) \in
+  B$ and with%
+\[
+\frac{1}{N}\sum_{n=1}^{N}g\left(  \fracpart{  n\lambda_{N}+\phi_{N} }
+\right)  \rightarrow 0,
+\]
+where $g\left(  x\right)  $ is continuous and even, and $g\left(  x\right)
+\geq 0,$ with equality if and only if $\fracpart{x} = 0.$ Then
+$N\lambda_{N}\rightarrow0$ and $\phi_{N} \rightarrow 0.$
+\end{lemma}
+
+\begin{IEEEproof}
+For any $\delta>0,$ there exists $N_{0}$ such that if $N>N_{0}$ and
+$K_{N}=\left\{  n\leq N;\left\vert \fracpart{  n\lambda_{N}+\phi_{N} }
+\right\vert <\delta\right\}  $ then $\#K_{N}>3/4N.$ Choose $\delta<1/8.$ By
+Lemma \ref{lem:moran},
+\[
+\left\{  1,2,\ldots,N/2\right\}  \subset K_{N}-K_{N}.
+\]
+Let $m,n\in K_{N}.$ Then%
+\begin{align*}
+\left\vert \fracpart{  n\lambda_{N}+\phi_{N} }  \right\vert  &  <\delta,\\
+\left\vert \fracpart{  m\lambda_{N}+\phi_{N} }  \right\vert  &  <\delta
+\end{align*}
+and from Lemma \ref{lem:fracpartsumanddelta}
+\[
+\left\vert \fracpart{  \left(  m-n\right)  \lambda_{N} }  \right\vert
+<2\delta.
+\]
+Thus, for $k\in\left\{  1,2,\ldots,N/2\right\}  ,$%
+\[
+\left\vert \fracpart{  k\lambda_{N} }  \right\vert <2\delta.
+\]
+In particular, $\left\vert \lambda_{N}\right\vert <2\delta<1/4,$ and so
+$2\lambda_{N}=\fracpart{2\lambda_{N}}  .$ Putting $k=2$ above, we
+therefore have $\left\vert 2\lambda_{N}\right\vert <2\delta,$ and so
+$\left\vert \lambda_{N}\right\vert <\delta.$ Hence $\left\vert 4\lambda
+_{N}\right\vert <4\delta<1/2,$ and so $4\lambda_{N}=\fracpart{  4\lambda
+_{N} }  .$ Continuing in this way, we have $\left\vert 2^{r}\lambda
+_{N}\right\vert <2\delta,$ for all $r$ such that $2^{r}\leq N/2.$ Let $r$ be
+such that $2^{r}\leq N/2$ and $2^{r+1}>N/2.$ Then%
+\[
+\left\vert N\lambda_{N}\right\vert <\left\vert 2^{r+2}\lambda_{N}\right\vert
+<8\delta.
+\]
+Since $\delta$ is arbitrary, it follows that $N\lambda_{N}\rightarrow0$ as
+$N\rightarrow\infty.$
+
+Let $n \in K_{N}$. From the above argument $n\lambda_{N}\rightarrow0$ and $\left\vert \fracpart{  n\lambda_{N}+\phi_{N} }  \right\vert < \delta$. Consequently $\left\vert \phi_{N}\right\vert <\delta$ and therefore $\phi_{N}\rightarrow0$.
+\end{IEEEproof}
+
+\begin{theorem}
+\label{th:one}Let $\widehat{\lambda}_{N}$ and $\widehat{\phi}_{N}$ be given by
+$\left(  \ref{eq:lsest}\right)  .$ Then $N\widehat{\lambda}_{N}\rightarrow0$
+and $\widehat{\phi}_{N}\rightarrow0,$ almost surely as $N\rightarrow\infty.$
+\end{theorem}
+
+\begin{IEEEproof}
+Let $A$ be the subset of the sample space $\Omega$ on which $\tau_{N}\left(
+\widehat{\lambda}_{N},\widehat{\phi}_{N}\right)  \rightarrow\sigma^{2},$ and
+let $\left(  \lambda_{N},\phi_{N}\right)  $ be $\left(  \widehat{\lambda}%
+_{N},\widehat{\phi}_{N}\right)  $ at some point in $A.$ Note that $P\left(
+A\right)  =1.$ Lemma \ref{lem:moran2}, applied to the function $g$ defined in
+Lemma \ref{lem:one} shows that $N\lambda_{N}\rightarrow0$ and $\phi
+_{N}\rightarrow0$. The proof follows.
+\end{IEEEproof}
+
+We are now in a position to complete the derivation of the asymptotic
+properties.
+\begin{IEEEproof} (Theorem \ref{thm:asymp_proof})
+Strong consistency follows directly from Theorem \ref{th:one}. The proof
+of the central limit theorem is along different lines from usual proofs, as the second
+derivatives of  \eqref{eq:sumofsquaresfunction} do not exist everywhere in a
+neighbourhood of the true values. Let%
+\[
+T_{N}\left(  \psi,\phi\right) =S_{N}\left(  \psi/N,\phi\right) =\frac{1}{N}\sum_{n=1}^{N}\fracpart{  X_{n}+n\psi/N+\phi }  ^{2}.
+\]
+In view of the strong consistency, it is only the local behaviour near
+$\left(  \psi,\phi\right)  =\left(  0,0\right)  $ which is relevant. We shall
+assume in what follows that $\left\vert \psi\right\vert +\left\vert
+\phi\right\vert <1$. It is shown in Lemma \ref{lem:TNparts} in the appendix that
+\begin{align}
+\left[
+\begin{array}
+[c]{c}%
+\frac{\partial T_{N}}{\partial\psi}\\
+\frac{\partial T_{N}}{\partial\phi}%
+\end{array}
+\right] &= \frac{2}{N}\sum_{n=1}^{N}\left[
+\begin{array}
+[c]{c}%
+n/N\\
+1
+\end{array}
+\right]  X_{n} \nonumber \\
+&  +2\left(  1-h  +o\left(  1\right) \right) \Abf  \left[
+\begin{array}
+[c]{c}%
+\psi\\
+\phi
+\end{array}
+\right]  \nonumber \\
+&  +\left(  \left\vert \psi\right\vert +\left\vert \phi\right\vert
+\right) O_P \left( N^{-1/2} \right)  . \label{eq:TNpart}
+\end{align}
+where $h = f_X \left(-1/2\right)$ and $\Abf$ is the $2 \times 2$ matrix
+\[
+\Abf = N^{-1}\sum_{n=1}^{N}\left[
+\begin{array}
+[c]{cc}%
+\left(  n/N\right)  ^{2} & n/N\\
+n/N & 1
+\end{array}
+\right].
+\] 
+Put%
+\[
+\left[
+\begin{array}
+[c]{c}%
+\psi_{N}\\
+\phi_{N}%
+\end{array}
+\right]  =-\frac{1}{N(1-h)} \Abf^{-1} \sum_{n=1}^{N}\left[
+\begin{array}
+[c]{c}%
+n/N\\
+1
+\end{array}
+\right]  X_{n}.
+\]
+Now%
+\[
+N^{-1/2}\sum_{n=1}^{N}\left[
+\begin{array}
+[c]{c}%
+n/N\\
+1
+\end{array}
+\right]  X_{n}%
+\]
+is asymptotically normal with mean $0$ and covariance matrix%
+\[
+\sigma^{2}\lim_{N\rightarrow\infty} \Abf  = \sigma^{2}\left[
+\begin{array}
+[c]{cc}%
+1/3 & 1/2\\
+1/2 & 1
+\end{array}
+\right]  ,
+\]
+where $\sigma^{2}=\operatorname{var}X_{n}.$ Thus $N^{1/2}\left[\psi_{N} \; \phi_{N} \right]^{\prime}$ is asymptotically normal with mean $0$ and covariance matrix%
+\[
+ \frac{\sigma^{2}}{\left(  1-h  \right)  ^{2}}\left[
+\begin{array}
+[c]{cc}%
+1/3 & 1/2\\
+1/2 & 1
+\end{array}
+\right]  ^{-1} = \frac{12\sigma^{2}}{\left(  1-h  \right)  ^{2}}\left[
+\begin{array}
+[c]{cc}%
+1 & -1/2\\
+-1/2 & 1/3
+\end{array}
+\right]  .
+\]
+Hence, since $\psi_{N}$ and $\phi_{N}$ are $O_{P}\left(  N^{-1/2}\right)  ,$
+and%
+\begin{align*}
+\Abf^{-1} \left[
+\begin{array}
+[c]{c}%
+\frac{\partial T_{N}}{\partial\psi}\\
+\frac{\partial T_{N}}{\partial\phi}%
+\end{array}
+\right]
+&  =-2\left(  1-h  \right)  \left(  \left[
+\begin{array}
+[c]{c}%
+\psi_{N}\\
+\phi_{N}%
+\end{array}
+\right]  -\left[
+\begin{array}
+[c]{c}%
+\psi\\
+\phi
+\end{array}
+\right]  \right)  \\
+&  +2o\left(  1\right)  \left[
+\begin{array}
+[c]{c}%
+\psi\\
+\phi
+\end{array}
+\right]  + \left(  \left\vert \psi\right\vert +\left\vert
+\phi\right\vert \right)  O_P \left( N^{-1/2}\right)  ,
+\end{align*}
+it follows that
+\begin{equation}
+\left[
+\begin{array}
+[c]{c}%
+\frac{\partial T_{N}}{\partial\psi}\\
+\frac{\partial T_{N}}{\partial\phi}%
+\end{array}
+\right]  =0\label{eq:part}%
+\end{equation}
+only if%
+\[
+\left[
+\begin{array}
+[c]{c}%
+\psi\\
+\phi
+\end{array}
+\right]  =\left[
+\begin{array} 
+[c]{c}%
+\psi_{N}\\
+\phi_{N}%
+\end{array}
+\right]  \left(  1+o_{P}\left(  1\right)  \right)  .
+\]
+The result follows, since $N\widehat{\lambda}_{N}=N\left(
+  f_{0}-\widehat{f}_{N}\right)$ and
+$\widehat{\phi}_{N}=\theta_{0}-\widehat{\theta}_{N}$ and since $\left(
+  \ref{eq:part}\right) $ holds at $\left( \psi,\phi\right) =\left(
+  N\widehat{\lambda}_{N},\widehat{\phi}_{N}\right) $ by Lemma \ref{lem:part} contained in the appendix.
+\end{IEEEproof}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "lsuwrapping.tex"
+%%% End: 

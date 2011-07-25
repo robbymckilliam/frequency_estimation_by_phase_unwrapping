@@ -1,0 +1,108 @@
+\documentclass{article}
+
+\usepackage{ifpdf}
+\ifpdf
+  \usepackage[pdftex]{graphicx}
+  \usepackage{thumbpdf}
+  \usepackage[naturalnames]{hyperref}
+  \DeclareGraphicsRule{*}{mps}{*}{}
+\else
+	\usepackage{graphicx}
+\fi
+\usepackage{bm, booktabs}
+\usepackage{amsmath}%
+\usepackage{amsfonts}%
+\usepackage{amssymb}%
+%\usepackage{amsthm}
+\usepackage{mathrsfs}
+%\usepackage{graphicx}
+%\usepackage{setspace}
+\usepackage{cite}
+%\usepackage{times}
+\usepackage[normalem]{ulem}
+%\usepackage{algorithmic}
+%\usepackage[figure, vlined, linesnumbered]{algorithm2e}
+\usepackage[vlined, linesnumbered]{algorithm2e}
+%\usepackage{algorithm}
+\usepackage{units}
+
+\newcommand{\round}[1]{\lfloor #1 \rceil}
+\newcommand{\floor}[1]{\lfloor #1 \rfloor}
+\newcommand{\ceil}[1]{\lceil #1 \rceil}
+\newcommand{\reals}{{\mathbb R}}
+\newcommand{\ints}{{\mathbb Z}}
+\newcommand{\integers}{{\mathbb Z}}
+\newcommand{\uy}{\underline{\bm{Y}}}
+\newcommand{\uey}{\underline{Y}}
+\newcommand{\sign}[1]{\mathtt{sign}(#1)}
+\newcommand{\Qbf}{{\mathbf Q}}
+\newcommand{\Bbf}{{\mathbf B}}
+\newcommand{\Ibf}{{\mathbf I}}
+\newcommand{\ybf}{{\mathbf y}}
+\newcommand{\xbf}{{\mathbf x}}
+\newcommand{\zbf}{{\mathbf z}}
+\newcommand{\ebf}{{\mathbf e}}
+\newcommand{\vbf}{{\mathbf v}}
+\newcommand{\wbf}{{\mathbf w}}
+\newcommand{\kbf}{{\mathbf k}}
+\newcommand{\sbf}{{\mathbf s}}
+\newcommand{\Pibf}{{\mathbf \Pi}}
+\newcommand{\onebf}{{\mathbf 1}}
+\newcommand{\fbf}{{\mathbf f}}
+\newcommand{\ubf}{{\mathbf u}}
+
+\newcommand{\vol}{\operatorname{vol}}
+\newcommand{\vor}{\operatorname{Vor}}
+
+\begin{document}
+
+\section{Reviewer 1 Corrections}
+
+\begin{enumerate}
+\item Added ``(Figures 1 to 5 respectively)'' to Section 5.
+\item The reviewer comments on the weaker asymptotic performance of the LSPUE estimator versus the QF technique.  This performance loss is predicted by our theoretical results.  The variance increase of the LSPUE, as compared to the CRB and the QF, can be overcome by using a numerical optimisation procedure (such as Newton's method) starting at the estimate given by the LSPUE.  We have not done this in order to display the correctness of our theoretical results.  To clarify this we have added the following paragraph to Section 5:
+
+``Note that the asymptotic variance of the LSPUE is larger than the CRB.  This performance loss can be overcome by using a numerical optimisation procedure, such as Newton's method, starting at the estimate given by the LSPUE.  We have not displayed these results here in order to show the correctness of our asymptotic theory.''.
+
+However, it is the case that the LSPUE is more computationally intensive than the QF (and all other techniques).  For this reason the QF method is to be preferred in practice. We have added a table displaying computational complexity of the estimators (this was also requested by reviewer 3).
+\end{enumerate}
+
+\section{Reviewer 2 Corrections}
+
+The reviewer requests that we cite more sources on phase unwrapping.  The phase unwrapping literature is quite vast and covers a wide variety of applications.  For this reason we have focused on the phase unwrapping literature directly involving frequency estimation. We have added two other references related to frequency estimation and phase unwrapping.
+
+\bibliographystyle{plain}
+\begin{thebibliography}{10}
+
+\bibitem{Fowler2002_freq_est_by_phases}
+M.~L. Fowler,
+\newblock ``Phase-based frequency estimation: A review,''
+\newblock {\em Digital Signal Processing}, vol. 12, no. 4, pp. 590 -- 615,
+  2002.
+  
+\bibitem{Lovell1992_stat_perform_inst_freq_est}
+B.~C. Lovell and R.~C. Williamson,
+\newblock ``The statistical performance of some instantaneous frequency
+  estimators,''
+\newblock {\em IEEE Trans. Signal Process.}, vol. 40, no. 7, pp. 1708--1723,
+  Jul 1992.
+
+\end{thebibliography}
+
+
+\section{Reviewer 3 Corrections}
+
+The reviewer comments on the presentation of Section 3, particularly with respect to the length of the proof of Theorem 1.  To address this, part of the proof of Theorem 1 has been separated into a lemma and placed into the appendix.  Also, Lemma 7 has been moved to the appendix.  The reviewer also requests a table displaying the computational complexity of the estimators.  This has been included along with the paragraph:
+
+``Table 1 shows the computation time for $10^5$ trials of each estimator for $N=16,64,256,512,1024$. The computer used is a \unit[2.13]{Ghz} Intel Core2. As expected the LSPUE is significantly slower than other estimators. The computational complexity of our LSPUE algorithm (Section 4) has order $O(N^3\log{N})$ whereas the other estimators have complexity $O(N)$ or $O(N\log{N})$. For this reason, the periodogram or Quinn-Fernandes estimators are to be preferred in practice. Nevertheless, it may be that significantly faster algorithms exist to compute the LSPUE.''
+
+The following addresses the numbered changes requested by the reviewer:
+\begin{enumerate} 
+\item Replaced $\{\cdot\}$ with $\left<\cdot\right>$ to denote the fractional part.
+\item We have added the footnote ``The notation $K-K$ should not be confused with set subtraction.'' as part of Lemma 4.
+\item Fixed.  $\phi_0 - \phi$ has been changed to $\theta_0 - \theta$ in the second paragraph of Section 3.
+\item Fixed.  The variable $h$ is now defined as $f_X(-1/2)$.  This does not affect the proofs due to the symmetry of $f_X$.
+\item Both big-O and little-o notation are used in the proof.
+\end{enumerate}
+
+\end{document}

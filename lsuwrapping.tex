@@ -1,0 +1,502 @@
+%\documentclass[draftcls, onecolumn, 11pt]{../../bib/IEEEtran}
+\documentclass[journal]{IEEEtran}
+
+\usepackage{mathbf-abbrevs}
+
+\input{defs}
+
+\begin{document}
+
+\title{Frequency estimation by phase unwrapping}
+
+\author{Robby~G.~McKilliam%
+  \thanks{Robby~McKilliam is partly supported by a scholarship from
+    the Wireless Technologies Laboratory, CSIRO ICT Centre, Sydney,
+    Australia}, Barry~G.~Quinn%
+  \thanks{Barry~Quinn is with the Department of Statistics, Macquarie
+    University, Sydney, NSW, 2109, Australia}, I.~Vaughan~L.~Clarkson%
+  \thanks{Robby~McKilliam and Vaughan~Clarkson are with the School of
+    Information Technology \& Electrical Engineering, The University
+    of Queensland, Qld., 4072, Australia} and Bill Moran
+    \thanks{B. Moran is with the Department of Electrical Engineering and Computer
+Science, Melbourne Systems Lab, Dept of Elec \& Electronic Eng, Uni of Melbourne, Vic. 3010, Australia.} }
+% The paper headers
+\markboth{Robby~G.~McKilliam \emph{et al.}, Frequency estimation by phase unwrapping }%
+{DRAFT \today}
+
+% make the title area 
+\maketitle
+
+ 
+\begin{abstract}
+  Single frequency estimation is a long-studied problem with application domains
+  including radar, sonar, telecommunications, astronomy and medicine.  One
+  method of estimation, called \emph{phase unwrapping}, attempts to estimate
+  the frequency by performing linear regression on the phase of the received
+  signal.  This procedure is complicated by the fact that the received phase
+  is `wrapped' modulo $2\pi$ and therefore must be `unwrapped' before the
+  regression can be performed.  In this paper we propose an estimator that
+  performs phase unwrapping in the least squares sense.  The estimator is
+  shown to be strongly consistent and its asymptotic distribution is
+  derived. We then show that the problem of computing the least squares phase
+  unwrapping is related to a problem in algorithmic number theory known as the
+  nearest lattice point problem.  We derive a polynomial time algorithm that
+  computes the least squares estimator.  The results of various simulations
+  are described for different values of sample size and SNR.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Frequency estimation, phase unwrapping, central limit theorem, lattices, nearest lattice point problem, number theory
+\end{IEEEkeywords}
+
+
+\input{intro}
+
+
+\input{asymptotics}
+
+
+
+%\section{Lower bounds for estimation}
+
+
+\input{lattice}
+
+
+\section{Simulations} \label{sec:simulations} 
+
+We have compared the performance of five 
+estimators: the periodogram estimator
+\cite{Rife1974}; the LSPUE; the parabolic, smoothed central finite difference
+estimator (PSCFD) \cite{Lovell1991}; Kay's window estimator \cite{Kay1989};
+and the Quinn-Fernandes estimator \cite{Quinn_Fernandes_1991,
+  Quinn_recent_advances_in_freq_est_2008}.  Those estimators based on phase
+unwrapping are the LSPUE, Kay's estimator and the PSCFD estimator. Five
+simulations were run with $N=16$, $N=64$ , $N=256$, $N=512$ and $N=1024$ (Figures \ref{plot:MSEvSNRn=16} to \ref{plot:MSEvSNRn=1024} respectively), each with SNR  varied between \unit[-20]{dB} and \unit[20]{dB},  and 1000 trials were run for each SNR value.  The value of $(f_0, \theta_0)$ was varied uniformly
+in the range $[-\nicefrac{1}{2},\nicefrac{1}{2})^2$.  The distribution of the
+$s_n$ was assumed to be complex i.i.d. and Gaussian with variance $\sigma^2$. 
+This gave an SNR of $10 \log_{10} \left( \nicefrac{A^2}{2\sigma^2} \right)$ dB.
+
+Standard behaviour was observed for the `nonlinear' estimators.  The mean
+square error (MSE) was large below a particular threshold SNR.  Above that
+threshold, the estimators appeared to converge to the Cramer-Rao lower bound
+(CRB) \cite{Rife1974} depicted by the dashed line.  It is clear that the
+periodogram estimator produces the most statistically accurate results, with
+the LSPUE and Quinn-Fernandes estimators only marginally worse.  Kay's
+estimator and the PSCFD perform comparatively poorly, particularly for large
+$N$.  Kay's estimator performs particularly poorly as it fails to correctly
+estimate $f_0$ when it is near $0.5$, i.e., when $f_0$ is near the branch cut
+on the unit circle \cite{Clarkson1999}.  As noted elsewhere
+\cite{Clarkson1994AnalysisKaysVariance}, the performance of Kay's estimator is
+improved if $f_0$ is bounded away from $0.5$.
+
+The dash-dotted line is the asymptotic variance of the LSPUE derived in
+Theorem \ref{thm:asymp_proof}.  It can be seen that, provided the SNR is high
+enough to avoid the threshold effect, the performance of the LSPUE closely
+agrees with the asymptotic results.  Note that the asymptotic variance of the LSPUE is larger than the CRB.  This performance loss can be overcome by using a numerical optimisation procedure, such as Newton's method, starting at the estimate given by the LSPUE.  In order to show the correctness of our asymptotic theory we have not displayed these results here.
+
+Table \ref{tab_computation_time} shows the computation time for $10^5$ trials of each estimator for $N=16,64,256,512,1024$. The computer used is a \unit[2.13]{Ghz} Intel Core2. As expected the LSPUE is significantly slower than other estimators. The computational complexity of our LSPUE algorithm (Section \ref{sec:LSPUandNP}) has order $O(N^3\log{N})$ whereas the other estimators have complexity $O(N)$ or $O(N\log{N})$.  For this reason, the periodogram or Quinn-Fernandes estimators are to be preferred in practice. Nevertheless, it may be that significantly faster algorithms exist to compute the LSPUE.
+
+\begin{table}[h]
+\centering
+\caption{Computation time in seconds for $10^5$ trials}
+\begin{tabular}{lrrrrr}
+Algorithm & \multicolumn{1}{l}{n=16} & \multicolumn{1}{l}{n=64} & \multicolumn{1}{l}{n=256} & \multicolumn{1}{l}{n=512} & \multicolumn{1}{l}{n=1024} \\ \toprule
+Kay  & 0.156 & 0.625 & 2.406 & 4.813 & 9.641\\ 
+PSCFD  & 0.141 & 0.547 & 2.094 & 4.187 & 8.375\\ 
+Quinn-Fernandes  & 0.438 & 1.297 & 4.469 & 8.985 & 21.141\\ 
+Periodogram & 0.437 & 1.656 & 7.578 & 17.828 & 49.157\\
+LSPUE & 5.578 & 346.2 & $>10^4$ & $>10^5$ & $>10^6$ \\ \bottomrule
+\end{tabular}
+\label{tab_computation_time}
+\end{table}
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=\linewidth]{fig/plot.1}
+		\caption{MSE in frequency versus SNR when $N=16$.}
+		\label{plot:MSEvSNRn=16}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=\linewidth]{fig/plot.2}
+		\caption{MSE in frequency versus SNR when $N=64$}
+		\label{plot:MSEvSNRn=64}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=\linewidth]{fig/plot.3}
+		\caption{MSE in frequency versus SNR when $N=256$.}
+		\label{plot:MSEvSNRn=256}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=\linewidth]{fig/plot.4}
+		\caption{MSE in frequency versus SNR when $N=512$.}
+		\label{plot:MSEvSNRn=512}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=\linewidth]{fig/plot.5}
+		\caption{MSE in frequency versus SNR when $N=1024$.}
+		\label{plot:MSEvSNRn=1024}
+\end{figure}
+
+%\subsection{Computational Trials}
+
+
+\section{Conclusion}\label{sec:conclusion}
+
+We have discussed single frequency estimation via least squares phase
+unwrapping. This estimator has been shown to be strongly consistent and its
+central limit theorem derived. The problem of computing the least squares
+phase unwrapping has been demonstrated to be related to a problem in
+algorithmic number theory known as the nearest lattice point problem. We have
+derived an algorithm that computes the least squares estimate in
+$O(N^3\log{N})$ arithmetic operations where $N$ is the sample size.  The
+complexity is high when compared with other single frequency estimators and
+arises from the need to solve the nearest lattice point problem in the lattice
+$\Lambda$ derived in Section \ref{sec:LSPUandNP}.  One possible algorithm has
+been described here.  However, it may be that much faster nearest point
+algorithms exist for this specific lattice.
+
+We have compared the performance of the LSPUE and the periodogram estimator
+\cite{Rife1974} by Monte Carlo simulation.  It was found that the LSPUE is
+marginally less accurate than the periodogram estimator and significantly more
+accurate than other estimators based on phase unwrapping.  The simulations
+agree with the theoretical central limit theorem derived in Section
+\ref{sec:asymptotic_properties}.
+
+
+%\bibliographystyle{IEEEbib}
+\small
+\bibliography{../../bib/bib}
+
+
+\appendix
+
+\begin{lemma} \label{lem:zero_mean_indepent_sum_bound}
+  Let $Z_1, \dots, Z_N$ be independent, zero-mean random variables with $|Z_j|
+  \leq 1$.  Then, for any integer $\beta > 0$, as $N \rightarrow \infty$,
+\begin{equation*}
+  S = E(Z_1 + \dots + Z_N)^{2 \beta} = O(N^\beta).
+\end{equation*}
+\end{lemma}
+
+\begin{IEEEproof}
+We can write $S$ according to the multinomial expansion
+\begin{equation}
+  S = \sum_{k_1 + \dots + k_N = 2 \beta} {2 \beta \choose k_1, \dots, k_N} \prod_{j=1}^N E(Z_j^{k_j})
+  	\label{S=multinomial}
+\end{equation}
+where we make use of the multinomial coefficients
+\begin{equation*}
+  {2 \beta \choose k_1, \dots, k_N} = \frac{(2\beta)!}{k_1! \cdots k_N!}.
+\end{equation*}
+
+Now, because the $Z_j$ have zero mean, the product in~(\ref{S=multinomial}) is
+zero if any $k_j = 1$.  Accordingly,  we define the set
+\begin{equation*}
+  \mathcal{K} = \bigg\{\kbf \in {\mathbb Z}^n \mid k_j \geq 0, k_j \neq 1, \sum_{j=1}^N k_j = 2 \beta\bigg\}
+  \subset [0, 2 \beta]^N.
+\end{equation*}
+In view of the fact that the $Z_j$ are bounded with $|Z_j| \leq 1$, we then
+have
+\begin{equation}
+  |S| \leq \sum_{\kbf \in \mathcal{K}} {2 \beta \choose \kbf}  \label{absSbound}
+\end{equation}
+
+Let $c(\kbf)$ be the number of non-zero elements in the vector $\kbf$.  Since
+$k_j \neq 1$ and the $k_j$ sum to $2 \beta$, it follows that $c(\kbf) \leq
+\beta$ for all $\kbf \in \mathcal{K}$.  Clearly, in addition, $c(\kbf) \geq 1$,
+and so from (\ref{absSbound}) we have
+\begin{equation*}
+  |S| \leq \sum_{d=1}^{\beta} \sum_{\substack{\kbf \in \mathcal{K} \\ c(\kbf) = d}} {2 \beta \choose \kbf}
+	\leq \sum_{d=1}^{\beta} \sum_{\substack{\kbf \in \mathcal{K} \\ c(\kbf) = d}} \frac{(2 \beta)!}{2^d}
+	\leq \sum_{d=1}^{\beta} \sum_{\substack{\kbf \in [0, 2 \beta]^N \\ c(\kbf) = d}} \frac{(2 \beta)!}{2^d}
+\end{equation*}
+
+Consider the number of integer vectors $\kbf$ that satisfy the conditions of
+the innermost sum, \emph{i.e.}, that $\kbf \in [0, 2\beta]^N$ and $c(\kbf) =
+d$.  There are ${N \choose d}$ ways of selecting the indices of non-zero $k_j$
+so that $c(\kbf) = d$ and then $2 \beta$ possibilities for the value of each
+such non-zero $k_j$.  Therefore, there are $(2 \beta)^d {N \choose d}$
+possible vectors in total.  Hence,
+\begin{align*}
+  |S| \leq (2 \beta)! \sum_{d=1}^{\beta} {N \choose d} \beta^d &\leq (2 \beta)! \sum_{d=1}^{\beta} (N \beta)^d \\ &\leq (2 \beta)! \beta (N \beta)^{\beta} = O(N^\beta).
+\end{align*}
+\end{IEEEproof}
+
+\begin{lemma} \label{lem:TNparts}
+Assume that $\left\vert \psi\right\vert +\left\vert\phi\right\vert <1$.  Then \eqref{eq:TNpart} holds.
+\end{lemma}
+\begin{IEEEproof}
+\begin{align*}
+\left[
+\begin{array}
+[c]{c}%
+\frac{\partial T_{N}}{\partial\psi}\\
+\frac{\partial T_{N}}{\partial\phi}%
+\end{array}
+\right]   &  =\frac{2}{N}\sum_{n=1}^{N}\left[
+\begin{array}
+[c]{c}%
+n/N\\
+1
+\end{array}
+\right]  \left(  X_{n}+n\psi/N+\phi-I_{n,N}\right)  \\
+&  =\frac{2}{N}\sum_{n=1}^{N}\left[
+\begin{array}
+[c]{c}%
+n/N\\
+1
+\end{array}
+\right]  \left[  X_{n}+n\psi/N+\phi \right. \\ 
+&\left. \hspace{2.7cm} -E\left(  I_{n,N}\right)  +E\left(
+I_{n,N}\right)  -I_{n,N}\right]
+\end{align*}
+where, since $\forall n$ $\left\vert n\psi/N+\phi\right\vert <1,$%
+\[
+I_{n,N}=\left\{
+\begin{array}
+[c]{ccc}%
+1 & ; & X_{n}+n\psi/N+\phi\geq \nicefrac{1}{2}\\
+-1 & ; & X_{n}+n\psi/N+\phi<-\nicefrac{1}{2}\\
+0 & ; & \text{otherwise.}%
+\end{array}
+\right.
+\]
+Now, if $n\psi/N+\phi>0,$%
+\begin{align}
+E\left(  I_{n,N}\right)   &  =P\left(  X_{n}+n\psi/N+\phi\geq \nicefrac{1}{2} \right)
+\label{eq:one1}\\
+&  =\int_{\nicefrac{1}{2}-\left(  n\psi/N+\phi\right)  }^{\nicefrac{1}{2}}f_X \left(  x\right)
+dx 
+ =\left(  n\psi/N+\phi\right)  f_X \left(  \xi_{n,N}\right) \nonumber
+\end{align}
+where $\nicefrac{1}{2}-\left(  n\psi/N+\phi\right)  \leq\xi_{n,N} < \nicefrac{1}{2},$ while, if
+$n\psi/N+\phi<0,$%
+\begin{align}
+E\left(  I_{n,N}\right)   &  =-P\left(  X_{n}+n\psi/N+\phi<-1/2\right)
+\label{eq:one2}\\
+&  =\left(  n\psi/N+\phi\right)  f_X \left(  \xi_{n,N}\right)  ,\nonumber
+\end{align}
+where $-\nicefrac{1}{2}\leq\xi_{n,N}\leq-\nicefrac{1}{2}-\left(  n\psi/N+\phi\right)  .$ Thus, if
+$n\psi/N+\phi>0,$
+\[
+\operatorname{var}I_{n,N} =E\left(  I_{n,N}\right)  -\left[  E\left(
+I_{n,N}\right)  \right]  ^{2}  <\left(  n\psi/N+\phi\right)  f_X \left(  \xi_{n,N}\right)  ,
+\]
+while, if $n\psi/N+\phi<0,$%
+\[
+\operatorname{var}I_{n,N}<-\left(  n\psi/N+\phi\right)  f_X \left(  \xi
+_{n,N}\right)  .
+\]
+Hence%
+\begin{align*}
+\operatorname{var}N^{-\nicefrac{1}{2}}\sum_{n=1}^{N}\left[  I_{n,N}-E\left(
+I_{n,N}\right)  \right] &< \frac{4}{N}\sum_{n=1}^{N}\left\vert n\psi/N+\phi\right\vert f_X \left(
+\xi_{n,N}\right)  \\
+&  <\frac{4}{N}\left(  \left\vert \psi\right\vert +\left\vert \phi\right\vert
+\right)  \sum_{n=1}^{N}f_X \left(  \xi_{n,N}\right)  .
+\end{align*}
+Similarly,%
+\begin{align*}
+&\operatorname{var}N^{-\nicefrac{1}{2}}\sum_{n=1}^{N}\frac{n}{N}\left[  I_{n,N}-E\left(
+I_{n,N}\right)  \right] \\
+&  < \frac{4}{N}\sum_{n=1}^{N}\left(  \frac{n}{N}\right)  ^{2}\left\vert
+n\psi/N+\phi\right\vert f_X \left(  \xi_{n,N}\right)  \\
+&  < \frac{4}{N}\left(  \left\vert \psi\right\vert +\left\vert \phi\right\vert
+\right)  \sum_{n=1}^{N}f_X \left(  \xi_{n,N}\right)  .
+\end{align*}
+Since $f_X$ is symmetric and unimodal, with mode at $0$, there exists a unique
+$\xi$, for which $f_X \left(  x\right)  <1$ when $\left\vert x\right\vert >\xi.$
+Thus, as long as $\left\vert \psi\right\vert +\left\vert \phi\right\vert
+<\frac{1}{2} - \xi,$%
+\[
+\frac{4}{N}\left(  \left\vert \psi\right\vert +\left\vert \phi\right\vert
+\right)  \sum_{n=1}^{N}f_X \left(  \xi_{n,N}\right)  <4\left(  \left\vert
+\psi\right\vert +\left\vert \phi\right\vert \right)
+\]
+and so
+\[
+N^{-1}\sum_{n=1}^{N}\left[
+\begin{array}[c]{c}%
+n/N \\
+1
+\end{array}
+\right]  \left[  I_{n,N}-E\left(  I_{n,N}\right)  \right]  \\
+ = \left(  \left\vert \psi\right\vert +\left\vert \phi\right\vert
+\right) O_P \left( N^{-1/2} \right) .
+\]
+But, using $\left(  \ref{eq:one1}\right)  $ and $\left(  \ref{eq:one2}\right)  ,$
+we obtain%
+\begin{align*}
+&  \frac{2}{N}\sum_{n=1}^{N}\left[
+\begin{array}
+[c]{c}%
+n/N\\
+1
+\end{array}
+\right]  \left[  X_{n}+n\psi/N+\phi-E\left(  I_{n,N}\right)  \right]  \\
+&  =\frac{2}{N}\sum_{n=1}^{N}\left[
+\begin{array}
+[c]{c}%
+n/N\\
+1
+\end{array}
+\right]  \left[  X_{n}+n\psi/N+\phi-\left(  n\psi/N+\phi\right)  f_X \left(
+\xi_{n,N}\right)  \right]  \\
+&  =\frac{2}{N}\sum_{n=1}^{N}\left[
+\begin{array}
+[c]{c}%
+n/N\\
+1
+\end{array}
+\right]  \left[  X_{n}+\left(  n\psi/N+\phi\right)  \left(  1-f_X \left(
+\xi_{n,N}\right)  \right)  \right]  ,
+\end{align*}
+and so%
+\begin{align*}
+\left[
+\begin{array}
+[c]{c}%
+\frac{\partial T_{N}}{\partial\psi}\\
+\frac{\partial T_{N}}{\partial\phi}%
+\end{array}
+\right]   &  = \frac{2}{N}\sum_{n=1}^{N}\left[
+\begin{array}[c]{c}%
+n/N\\
+1
+\end{array}
+\right]  X_{n} \\
+&-\frac{2}{N}\sum_{n=1}^{N}\left[
+\begin{array}
+[c]{c}%
+n/N\\
+1
+\end{array}
+\right]  \left[  I_{n,N}-E\left(  I_{n,N}\right)  \right] \\
+&+ \frac{2}{N}\sum_{n=1}^{N}\left(  1-f_X \left(  \xi_{n,N}\right)
+\right)  \left[
+\begin{array}[c]{cc}%
+\left(  n/N\right)  ^{2} & n/N\\
+n/N & 1
+\end{array}
+\right]  \left[
+\begin{array}
+[c]{c}%
+\psi\\
+\phi
+\end{array}
+\right]  \\
+&  =\frac{2}{N}\sum_{n=1}^{N}\left[
+\begin{array}
+[c]{c}%
+n/N\\
+1
+\end{array}
+\right]  X_{n} +\left(  \left\vert \psi\right\vert +\left\vert \phi\right\vert
+\right) O_P \left( N^{-1/2} \right) \\
+&\hspace{-0.9cm}+\frac{2}{N}\sum_{n=1}^{N}\left(  1-f_X \left( -1/2\right)  +o\left(  1\right) \right)  
+\left[ \begin{array}[c]{cc}%
+\left(  n/N\right)  ^{2} & n/N\\
+n/N & 1
+\end{array} \right]  
+\left[ \begin{array}[c]{c}%
+\psi\\
+\phi
+\end{array}
+\right]
+\end{align*}
+where, because $|n\psi/N+\phi| \rightarrow 0$ as $N\rightarrow\infty$, $\xi_{n,N}$ approaches either $\nicefrac{1}{2}$ or $-\nicefrac{1}{2}$ for all $n$ and therefore $f_X\left(\xi_{n,N}\right) \rightarrow f_X\left( -1/2 \right)$.
+\end{IEEEproof}
+
+\begin{lemma}
+\label{lem:part}The partial derivatives of \eqref{eq:sumofsquaresfunction} are
+zero with probability 1 at $\left(  \widehat{f}_{N},\widehat{\theta}_{N}\right)  ,$ the minimiser
+of \eqref{eq:sumofsquaresfunction} over $B$.
+\end{lemma}
+
+\begin{IEEEproof}
+Let
+\[
+Z\left(  f,\theta\right)  =\sum_{n=1}^{N}\left(  Y_{n}-nf-\theta-\left\lfloor
+Y_{n}-n\widehat{f}_{N}-\widehat{\theta}_{N}\right\rceil \right)  ^{2}.
+\]
+Let $\left(  f^{\prime},\theta^{\prime}\right)  $ be the minimiser of
+$Z\left(  f,\theta\right)$. Observe that $Z$ is quadratic in
+$\left( f,\theta \right)$ and so the partial derivatives of $Z$ at the unique minimiser 
+$\left(  f^{\prime},\theta^{\prime}\right)$ are $0$. Now%
+\[
+Z\left(  f^{\prime},\theta^{\prime}\right)  \leq Z\left(  \widehat{f}%
+_{N},\widehat{\theta}_{N}\right)  =SS\left(  \widehat{f}_{N},\widehat{\theta
+}_{N}\right)  \leq SS\left(  f^{\prime},\theta^{\prime}\right)  .
+\]
+Thus $Z\left(  f^{\prime},\theta^{\prime}\right)  \leq SS\left(  f^{\prime}%
+,\theta^{\prime}\right)$. However, $\forall n$
+\[
+\left\vert Y_{n}-nf^{\prime}-\theta^{\prime}-\round{ Y_{n}-n\widehat
+{f}_{N}-\widehat{\theta}_{N} } \right\vert \geq\fracpart{
+Y_{n}-nf^{\prime}-\theta^{\prime} }  .
+\]
+Hence $Z\left(  f^{\prime},\theta^{\prime}\right)  \geq SS\left(  f^{\prime},\theta^{\prime}\right)$, and so $Z\left(  f^{\prime},\theta^{\prime}\right)  =SS\left(  f^{\prime},\theta^{\prime}\right)$ and $Z\left(  f^{\prime},\theta^{\prime}\right)  =Z\left(  \widehat{f}_{N},\widehat{\theta}_{N}\right)$. Consequently $f^{\prime}=\widehat{f}_{N}$ and $\theta^{\prime}=\widehat{\theta}_{N}.$ The partial derivatives of $Z$ and $SS$ are thus identical whenever the latter's exist, and since the derivatives of $SS$ exist everywhere except on $\cup_{n}\left\{  \left(  f,\theta\right)  ; \fracpart{  Y_{n}-nf-\theta } =-1/2\right\}$, which has probability zero, the result follows\footnote{It is possible to remove the `with probability zero' statement by appealing to some concepts in lattice theory that we describe in Section \ref{sec:LSPUandNP}.  Due to space restrictions we have not included this result.  Theorem \ref{thm:asymp_proof} holds in any case.}.
+ % We will show in Lemma \ref{lem:resinvoran} in the appendix, that $\left|\left\{Y_{n}-n\widehat{f}_{N}-\widehat{\theta}_{N}\right\}\right| \leq \nicefrac{1}{2} - \nicefrac{1}{2N}$ and therefore $SS$ is differentiable at $(\widehat{f}_{N}, \widehat{\theta}_{N})$ and the partial derivatives are zero.
+\end{IEEEproof}
+
+
+% Here we will prove a result required in Lemma \ref{lem:part}.  The result requires some concepts from lattice theory that were discussed in Section \ref{sec:LSPUandNP}. We firstly require the additional concept of \emph{relevant vectors}.  Consider the Voronoi region of a lattice $L$.  The faces of $\vor(L)$ lie in hyperplanes that are on the midway point between the lines connecting nearby lattice points.  The set of vectors that define the faces are called the \emph{Voronoi relevant vectors} or simply \emph{relevant vectors}.
+
+% \begin{remark} \label{rem:relvec}
+% Let $\rbf$ be a relevant vector in the lattice $L$.  If $\ybf \in \vor(L)$ then
+% \[
+% \ybf\cdot\rbf \leq \frac{\rbf\cdot\rbf}{2}.
+% \]
+% \end{remark}
+
+% \begin{remark} \label{An*relvecs}
+% The relevant vectors for the lattice $A_{N-1}^*$ are given by the vectors $\Qbf\ubf$ where
+% \[
+% \ubf = \sum_{i \in P}{\ebf_i}
+% \]
+% and where $P \subset \{1, 2, \dots, N\}$, $\ebf_i$ denotes a vector of zeros with a $1$ in the $i$th position and $\Qbf$ is given in (\ref{eq:Q}).
+% \end{remark}
+% A proof of Remark \ref{An*relvecs} is given in \cite{Clarkson1999:Anstar}.
+
+% \begin{lemma} \label{lem:resinvoran}
+% Let $\left(  \widehat{f}_{N},\widehat{\theta}_{N}\right)$ be the minimiser
+% of \eqref{eq:sumofsquaresfunction} over $B$.  Then
+% $\left|\left\{ Y_n - \widehat{f}_{N}n - \widehat{\theta}_{N} \right\}\right| \leq \nicefrac{1}{2} - \nicefrac{1}{2N}$ for all $n=1,2,\dots,N$.
+% \end{lemma}
+% \begin{IEEEproof}
+% We have shown in Section \ref{sec:LSPUandNP} that
+% \[
+% \Qbf(\ybf - \widehat{f}_N \nbf - \widehat{\ubf}) \in \vor(A_{N-1}^*)
+% \]
+% where $\widehat{\ubf} =  \round{\ybf - \widehat{f}_N \nbf -  \widehat{\theta}_N\onebf}$. Now from \eqref{eq:minwrttheta} it follows that
+% \[
+%  \widehat{\theta}_N = \frac{\onebf'(\ybf - \widehat{f}_N \nbf - \widehat{\ubf})}{N}
+% \] 
+% and therefore
+% \begin{align}
+% \Qbf(\ybf - \widehat{f}_N \nbf - \ubf) &= \ybf - \widehat{f}_N \nbf -\widehat{\ubf} - \frac{\onebf'(\ybf - \widehat{f}_N \nbf - \widehat{\ubf})}{N}\onebf \nonumber \\
+% &= \left\{ \ybf - \widehat{f}_N \nbf -  \widehat{\theta}_N\onebf \right\}  \in \vor(A_{N-1}^*) \in \label{eq:inVorAn*}
+% \end{align}
+% where we define $\{\cdot\}$ to operate on vectors by taking the fractional part of each element.  Let $\zbf = \left\{ \ybf - \widehat{f}_N \nbf -  \widehat{\theta}_N\onebf \right\}$. Assume that the lemma is false then $|z_n| > \nicefrac{1}{2} - \nicefrac{1}{2N}$ for some $n$.  If $z_n > \nicefrac{1}{2} - \nicefrac{1}{2N}$ then
+% \[
+% \Qbf\ebf_n \cdot \zbf = z_n - \bar{z} = z_n > \nicefrac{1}{2} - \nicefrac{1}{2N} = \frac{ \|\Qbf\ebf_n\|^2}{2}.
+% \]
+% This violates that $\zbf \in \vor{A_{N-1}^*}$ as $\Qbf\ebf_n$ is a relvant vector in $A_{N-1}^*$.  The case when  $z_n < -\nicefrac{1}{2} + \nicefrac{1}{2N}$ follows similarly.
+% \end{IEEEproof}
+
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

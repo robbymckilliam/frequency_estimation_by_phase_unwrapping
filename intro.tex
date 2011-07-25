@@ -1,0 +1,179 @@
+\section{Introduction}
+
+Estimation of the frequency of a single noisy sinusoid is a long studied
+problem with applications including radar, sonar, telecommunications,
+astronomy and medicine \cite{Quinn2001, Rife1974}.  In this paper, a single
+frequency signal is modelled as a complex sinusoid of the form
+\begin{equation} \label{eq_sinusoidal}
+A \exp{\big(2\pi j \left(f_0 n + \theta_0 \right)\big)},
+\end{equation}
+where $f_0$ is the frequency, $\theta_0$ is the phase, $n \in \{1,2\dots,N\}$, $A$
+is the signal amplitude and $j = \sqrt{-1}$.  The aim is to estimate the
+parameters $f_0$ and $\theta_0$ from the signal
+\begin{equation} \label{eq_sigmodel_noise}
+v_n = A \exp{\big(2\pi j \left(f_0 n + \theta_0 \right)\big)} + s_n,
+\end{equation} 
+where the sequence $s_1, s_2, \dots$ is a complex noise process. We shall assume, in
+this paper, that the random variables $s_n$ are independent and identically
+distributed, and that the distribution of $e^{j \alpha} s_n$ does not depend
+on $\alpha$. This will occur exactly when the distribution of $s_n$
+depends only on $\vert s_n \vert$.  To ensure identifiability we assume that
+$f_0$ and $\theta_0$ are in $[-\nicefrac{1}{2}, \nicefrac{1}{2})$.
+
+The maximum likelihood estimator of frequency under Gaussian white assumptions
+is known to be very closely approximated by the frequency that maximises the
+\emph{periodogram} (squared magnitude of the Fourier transform) of the $v_n$
+\cite{Quinn2001}.
+%That is 
+%\begin{equation} \label{eq:periodogram}
+%\hat{f} = \arg\max_{f\in[0,1)}{ P_v(f) }
+%\end{equation}
+%where
+%\[
+%P_v(f) = \frac{1}{N} \left| \sum_{n=1}^{N} v_n e^{2\pi j f n}  \right|^2
+%\]
+We refer to this estimator as the \emph{periodogram estimator}; its
+asymptotic properties have been known for some
+time \cite{Quinn2001, Hannan1973, Walker1971}.
+
+Rife and Boorstyn have suggested a practical method for computing the
+periodogram estimator, by using the fast Fourier transform to obtain the value
+of the periodogram at the Fourier frequencies $f =
+-\nicefrac{1}{2},-\nicefrac{1}{2}+\nicefrac{1}{N},-\nicefrac{1}{2}+\nicefrac{2}{N},
+\dots, \nicefrac{1}{2}-\nicefrac{1}{N}$ \cite{Rife1974}.  The Fourier
+frequency that maximises the periodogram is found and this estimate is then
+further refined by a numerical approach such as Newton's method.  A problem
+with this approach is that the numerical procedure can fail to locate the
+correct maximizer \cite{Rice1988}.  To avoid the problem, Rife and Boorstyn
+suggested zero padding the signal to the length $4N$ before performing the
+fast Fourier transform. This has recently been shown to work by Quinn \emph{et
+  al.}, who also show that applying Newton's method to the derivative of
+certain monotonic functions of the periodogram, rather than to the periodogram
+itself, ensures that Newton's method will succeed even without any zero
+padding \cite{Quinn2008maximizing_the_periodogram}.
+
+Regardless of these implementation difficulties, the periodogram estimator is
+widely seen as the best method for single frequency estimation.  It provides
+the most accurate results and using the fast Fourier transform can be computed
+in only $O(N\log{N})$ arithmetic operations.  Nevertheless, many other methods
+for single frequency estimation exist.
+
+One alternative method is \emph{phase unwrapping}~\cite{Fowler2002_freq_est_by_phases}.  Phase unwrapping
+estimators appear to have been first suggested by Tretter~\cite{Tretter1985},
+who utilized the fact that the phase of a complex sinusoid is a linear
+function that is `wrapped' modulo $2\pi$.  %This is
+%\[
+%\arg\left\{ \exp{\left(2\pi j \left(f_0 n + \theta_0 \right)\right)} \right\} = 2\pi(f_0 n + \theta_0) 
+%\]
+%modulo $2\pi$.  
+If the phase could be `unwrapped' then $f_0$ and $\theta_0$ could be estimated
+by linear regression.  Many phase unwrapping estimators have since been
+suggested \cite{Kay1989, Clarkson1994AnalysisKaysVariance, Clarkson1999,
+  Lovell1991, Lovell1992_stat_perform_inst_freq_est}. A common approach is to compute the first differences of the
+arguments of the $v_n$.  The resulting signal then resembles a moving average
+process, whose parameters can be estimated by standard linear techniques.
+This approach was first suggested by Kay \cite{Kay1989,
+  Clarkson1994AnalysisKaysVariance}.  A significant advantage of this approach
+is that the moving average process has enough structure for the estimates to
+be computed with only $O(N)$ arithmetic operations.  The estimator also
+appears to perform well when the signal-to-noise ratio is large.  The major
+drawback of Kay's estimator is that it thresholds at a relatively high SNR and
+also performs poorly at moderate SNRs \cite{Clarkson1994}. In fact, the
+estimator has been shown to be inconsistent, i.e., converges almost surely as
+$N \rightarrow \infty$ to the wrong frequency \cite{Quinn2001}.
+
+
+Another approach is to unwrap the phase in the least squares sense.  We call
+the resulting estimator the least squares phase unwrapping estimator (LSPUE).
+Clarkson has shown how the LSPUE is related to a problem in algorithmic number
+theory known as the nearest lattice point problem \cite{Clarkson1999,
+  Agrell2002}.  He has also shown that the LSPUE is closely related to the
+periodogram estimator.  Quinn has derived the asymptotic properties of a LSPUE
+in the simpler case of phase estimation \emph{i.e.} when $f_0 = 0$ and the aim
+is to estimate $\theta_0$ \cite{Quinn2007}.
+
+In this paper we derive the asymptotic properties of the LSPUE for single
+frequency estimation (Section \ref{sec:asymptotic_properties}).  We show that
+the estimator is strongly consistent and derive its central limit
+theorem. Following Clarkson \cite{Clarkson1999} we discuss methods to compute
+the LSPUE using a nearest lattice point approach (Section
+\ref{sec:LSPUandNP}).  While Clarkson suggested solving the nearest lattice
+point problem using the approximate algorithm of Babai \cite{Babai1986}, we
+describe a polynomial-time algorithm that computes the estimator exactly.  In
+Section \ref{sec:simulations} we provide simulations that display the
+statistical performance of the LSPUE alongside the periodogram estimator and
+some other single frequency estimators.  The LSPUE proves to be only
+marginally less accurate than the periodogram estimator and significantly more
+accurate than other estimators based on phase unwrapping. We also use the
+simulations to confirm the asymptotic results derived in Section
+\ref{sec:asymptotic_properties}.
+
+
+%\section{Signal model}
+%
+%A single frequency signal is modelled as a complex sinusoid of the form
+%\begin{equation} \label{eq_sinusoidal}
+%A \exp{\left(2\pi j \left(f_0 n + \theta_0 \right) \right)}
+%\end{equation}
+%where $n = 1,2\dots,N$, $f_0$ and $\theta_0$ are in [-\nicefrac{1}{2}, \nicefrac{1}{2}), $A$ is the signal amplitude and $j = \sqrt{-1}$.  The aim is to estimate the parameters $f_0$ and $\theta_0$ from the signal
+%\begin{equation} \label{eq_sigmodel_noise}
+%v_n = A \exp{\left(2\pi j \left(f_0 n + \theta_0 \right) \right)} + s_n
+%\end{equation} 
+%where $s_n$ is a complex noise process.
+
+
+\section{The least squares phase unwrapping estimator}
+The argument of the $v_n$, denoted $\angle{v_n}$, is given by
+\[
+\angle{v_n} = 2\pi\left( f_0 n + \theta_0 + X_n \right) \pmod{2\pi},
+\]
+where $X_n$ is noise in the range $[-\nicefrac{1}{2}, \nicefrac{1}{2})$ and 
+has a distribution depending only on $A$ and the probability density function
+(pdf) of the $s_n$.  When $s_n$ is complex Gaussian noise the distribution of
+the $X_n$ is known as the projected normal distribution and has been studied
+by Mardia and Jupp \cite[p. 46]{Mardia_directional_statistics}.  The
+distribution has also been discussed by Quinn \cite{Quinn2007} and Tretter
+\cite{Tretter1985}.  Other circular noise distributions may be used, for
+example, the wrapped normal, or von Mises distributions \cite{Fisher1993,
+  Mardia_directional_statistics}.  In this paper we assume that the $X_n$ are
+continuous, independent and identically symmetrically distributed, with
+cumulative distribution function (cdf) $F_X\left( x\right) $ and pdf $f_X
+\left( x\right)$.  We denote by $\sigma^{2}$ the common variance of the $X_n$.
+We also assume that $f_X \left( x\right) $ is unimodal, with mode at
+$0$. %Indeed, without such an assumption, the parameter $\theta_0$ is not properly identified.
+These assumptions are satisfied by a wide range of circular distributions
+including the projected normal, wrapped normal and von Mises distributions
+\cite{Fisher1993, Mardia_directional_statistics}
+
+Let $Y_n = \angle{v_n}/ \left(2\pi\right)$.  Then
+\begin{equation} \label{eq_polyphasemodel}
+Y_n = \fracpart{ f_0 n + \theta_0 + X_n },
+\end{equation}
+where $\fracpart{x} = x - \round{x}$ is the fractional part of $x$ and $\round{x}$
+denotes the nearest integer to $x$\footnote{The direction of rounding for
+  half-integers is not important, as long as it is consistent. The authors
+  have chosen to round up half-integers here.}.
+
+We may write \eqref{eq_polyphasemodel} as
+\begin{equation} \label{eq:eq_polyphasemodel}
+Y_n = f_0 n + \theta_0 + X_n + U_n,
+\end{equation}
+where $U_n = -\round{f_0 n + \theta_0 + X_n}$.  By considering the $U_n$ as
+nuisance parameters, where $U_n \in \ints$, we may derive the sum of squares
+function
+\begin{equation} \label{eq:sumofsquaresfunctionwithU}
+\sum_{n=1}^{N}\left(  Y_{n} - \theta - fn - U_{n}\right)^{2}.
+\end{equation}
+For fixed $f$ and $\theta$, \eqref{eq:sumofsquaresfunctionwithU} is minimized
+when $U_{n} = -\round{Y_{n} - \theta - fn}$.  Substituting this into
+\eqref{eq:sumofsquaresfunctionwithU} we obtain
+\begin{equation} \label{eq:sumofsquaresfunction}
+SS(f, \theta) = \sum_{n=1}^{N}\fracpart{  Y_{n} - \theta - fn }^{2}.
+\end{equation}
+The LSPUE returns the $f$ and $\theta$ that minimise $SS(f, \theta)$.
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "lsuwrapping.tex"
+%%% End: 

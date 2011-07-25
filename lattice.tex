@@ -1,0 +1,256 @@
+\section{Least squares unwrapping and the nearest lattice point problem} \label{sec:LSPUandNP}
+
+% \subsection{Lattice theory}\label{sec:lattice-theory}
+In this section we describe methods to compute the LSPUE.  We find that the
+computational problem can be transformed into a nearest lattice point problem
+\cite{Agrell2002} in an $N-2$ dimensional lattice to be specified shortly.  
+We first require some concepts from lattice theory.
+
+The set $L$ is said to be a lattice, with \emph{generator} or \emph{basis} matrix  $\Bbf$ if \cite{SPLAG},
+\[ 
+  L = \{\pbf \in \reals^n \;|\; \pbf = \Bbf\wbf , \wbf \in \ints^n \}.
+\]
+Vectors and matrices are written in bold font and 
+${}^{\prime}$ is used to denote transpose. A fundamental problem in lattice theory is
+the \emph{nearest lattice point problem}. The nearest lattice point problem
+is, given $\qbf\in\reals^n$ and some lattice $L$ whose lattice points lie
+in~$\reals^n$, to find that lattice point $\pbf \in L$ for which the Euclidean
+distance between $\qbf$ and $\pbf$ is minimised.  The notation
+$\NP(\qbf, L)$ is used to denote the nearest point in $L$ to $\qbf$.  We
+assume that, when two or more lattice points are of equal distance to $\qbf$, $\NP(\qbf, L)$
+selects one of the lattice points in a systematic manner.
+
+The nearest lattice point problem is known to be NP-hard under certain conditions when the lattice itself, or rather a basis thereof, is considered as an additional input parameter \cite{micciancio_hardness_2001, AjtaiShortestVecProbNPHard1998, Jalden2005_sphere_decoding_complexity}. Nevertheless, algorithms exist that can compute the nearest lattice point in reasonable time if the dimension is small
+\cite{Agrell2002, Viterbo_sphere_decoder_1999, Pohst_sphere_decoder_1981}. One
+such algorithm introduced by Pohst \cite{Pohst_sphere_decoder_1981} in 1981
+was popularised in the signal processing and communications fields by Viterbo
+and Boutros \cite{Viterbo_sphere_decoder_1999} and has since been called the
+\emph{sphere decoder}. Approximate algorithms for computing the nearest point
+have also been studied.  One example is Babai's nearest plane algorithm
+\cite{Babai1986}, which requires $O(n^4)$ arithmetic operations in the worst
+case.  For specific lattices where the generator matrix is known a priori,
+many fast nearest point algorithms are known \cite{Conway1982FastQuantDec,
+  Conway1986SoftDecLeechGolay, Clarkson1999:Anstar, McKilliam2008,
+  McKilliam2008b, McKilliam2009CoxeterLattices}.
+
+We now show how the LSPUE can be represented as a nearest lattice point
+problem in a lattice determined by $N$. Define the $N$-dimensional vectors
+$\mathbf{n}=\left[1 \; 2 \; \cdots \; N\right]^{\prime}$, $\mathbf{1}=\left[1 \; 1 \; \cdots \; 1\right]^{\prime}$, $\mathbf{y}=\left[Y_1 \; Y_2 \; \cdots \; Y_N\right]^{\prime}$, $\mathbf{x}=\left[X_1 \; X_2 \; \cdots \; X_N\right]^{\prime}$ and $\mathbf{u}=\left[U_1 \; U_2 \; \cdots \; U_N\right]^{\prime}$. The sum of squares function
+\eqref{eq:sumofsquaresfunctionwithU} can be written in vector form as
+\begin{equation}\label{eq:vectorsumofsquares}
+  \left\|\ybf - f\nbf - \theta\onebf - \ubf \right\|^2.
+\end{equation}
+Define the matrix $\Mbf = [\nbf \; \onebf].$ The least squares estimator is then
+\begin{equation}\label{eq_least_squares_unwrapping_x}
+\left[ \begin{array}[c]{c} \widehat{f}_N \\ \widehat{\theta}_N \end{array} \right] = \arg\min_{(f,\theta)\in[-\nicefrac{1}{2},\nicefrac{1}{2})^2}\min_{\ubf \in \ints^N }\left\|\ybf - \Mbf\left[ \begin{array}[c]{c} f \\ \theta \end{array} \right] - \ubf \right\|^2.
+\end{equation}
+
+Given $\ubf$, the least squares estimators of $f$ and $\theta$ are obtained by
+the usual linear regression formulae and are given by
+\begin{equation} \label{eq_regf} \left[ \begin{array}[c]{c} \widehat{f}_N \\
+      \widehat{\theta}_N \end{array} \right] = \Mbf^+ (\ybf - \ubf),
+\end{equation}
+where $\Mbf^+ = (\Mbf'\Mbf)^{-1}\Mbf'$.  Substituting (\ref{eq_regf}) into
+(\ref{eq_least_squares_unwrapping_x}) and rearranging, the least squares
+estimator of $\ubf$, given $f$ and $\theta$, is
+\begin{equation} \label{eq_minu}
+\hat{\ubf} = \arg\min_{\ubf\in\ints^{N}} {\|\Bbf(\ybf - \ubf)\|},
+\end{equation}
+where $\Bbf = \Ibf - \Mbf\Mbf^+$ and $\Ibf$ is the $N \times N$ identity
+matrix.
+
+Let $\Lambda$ be the lattice with generator matrix $\Bbf$.  The least squares
+phase unwrapping is then the $\hat{\ubf}$ for which $\Bbf\hat{\ubf}$ is the
+nearest lattice point in $\Lambda$ to $\Bbf\ybf$.  The least squares estimate
+(\ref{eq_least_squares_unwrapping_x}) can be computed by first computing
+$\NP(\Bbf\ybf, \Lambda)$, producing both $\Bbf\hat{\ubf}$ and $\hat{\ubf}$.
+$\widehat{f}_N$ and $\widehat{\theta}_N$ can then be computed using
+\eqref{eq_regf}.
+
+The most difficult part of the procedure is finding the nearest lattice point.
+One possible solution is to use the sphere decoder.  Unfortunately the sphere
+decoder has worst case exponential complexity and therefore is only
+computationally feasible when $N$ is small.  However, the lattice $\Lambda$ is
+not random and has a generator matrix with significant structure.  Using this
+structure we can construct a polynomial-time algorithm to compute the nearest
+point.  %In this paper we are interested in finding the estimates of $\hat{f}$ and $\hat{\theta}$ so we will define these algorithms to output these estimates rather than the nearest lattice point $\Bbf\hat{\ubf}$.  If the nearest lattice point is desired it can be calculated from $\hat{f}$ and $\hat{\theta}$ as $\Bbf\round{\ybf - \hat{f}\nbf - \hat{\theta}\onebf}$.
+
+Note that the nearest point is given by $\Bbf\hat{\ubf}$ where
+\begin{equation}\label{eq:nearest_point_minimisation}
+\hat{\ubf} = \arg\min_{\ubf\in\ints^N}\min_{(f, \theta)\in[-\nicefrac{1}{2},\nicefrac{1}{2})^2} \|\ybf - f\nbf - \theta\onebf - \ubf\|^2 .
+\end{equation}
+Fixing both $f$ and $\ubf$ and minimising with respect to $\theta$ we obtain
+\begin{equation} \label{eq:minwrttheta} 
+\theta = \frac{\onebf'(\ybf - f\nbf - \ubf)}{N}.
+\end{equation}
+Substituting this into \eqref{eq:nearest_point_minimisation} we find that
+\begin{equation} \label{eq:min_An*_line}
+\hat{\ubf} = \arg\min_{\ubf\in\ints^N}\min_{f\in[-\nicefrac{1}{2},\nicefrac{1}{2})} \|\Qbf\ybf - f\Qbf\nbf - \Qbf\ubf\|^2 ,
+\end{equation}
+where $\Qbf$ is the projection matrix
+\begin{equation} \label{eq:Q}
+\Qbf =  \left(\Ibf - \frac{\onebf \onebf'}{\onebf'\onebf}\right).
+\end{equation}
+The matrix $\Qbf$ is the generator matrix for a well studied lattice called
+$A_{N-1}^*$ \cite{SPLAG}.  Numerous nearest point algorithms exist for the
+lattice $A_N^*$ \cite{Clarkson1999:Anstar, Conway1982FastQuantDec,
+  McKilliam2008a, McKilliam2008b}.  The fastest known algorithm was described
+by McKilliam \emph{et al.} and requires $O(N)$ arithmetic operations
+\cite{McKilliam2008b}.
+
+Let $\zbf = \Qbf\ybf$, $\gbf = \Qbf\nbf$ and $\zetabf = \Qbf\ubf$.  Given $f$,
+\eqref{eq:min_An*_line} is minimised when
+\[
+\zetabf = \NP(\zbf - f\gbf, A_{N-1}^*).
+\]
+Conversely, given $\zetabf$, \eqref{eq:min_An*_line} is minimised by putting
+\[
+f = \frac{\gbf'(\zbf - \zetabf)}{\gbf'\gbf}.
+\]
+If we define the set
+\begin{equation}\label{eq:setS}
+  S = \left\{ \NP(\zbf - f\gbf, A_{N-1}^*) \; ; \; f\in[-\nicefrac{1}{2},\nicefrac{1}{2}) \right\},
+\end{equation}
+then the nearest point is given by $\Bbf\hat{\ubf}$ where $\hat{\ubf}$ satisfies
+\begin{equation} \label{eq:findbinS}
+\Qbf\hat{\ubf} = \arg\min_{\zetabf \in S} h(\zetabf)
+\end{equation}
+and $h: \reals^N \mapsto \reals$ is defined by
+\[
+h(\zetabf) = \left\|\zbf - \frac{\gbf'(\zbf - \zetabf)}{\gbf'\gbf}\gbf - \zetabf \right\|^2.
+\]
+The set $S$ contains the lattice points in $A_{N-1}^*$ that are nearest to
+some point on the line segment defined by $\zbf - f\gbf$ where
+$f\in[-\nicefrac{1}{2},\nicefrac{1}{2})$.
+
+Note that $\#S$ is finite.  We require an algorithm to find the lattice points
+in $S$.  The nearest point can then be found by testing each lattice point and
+returning the minimiser according to (\ref{eq:findbinS}). Computing $S$
+directly proves to be difficult, and, in fact, it is easier to compute a
+superset of $S$.  To show this we require some properties of the lattice
+$A_{N-1}^*$.  The generator matrix for $A_{N-1}^*$ is the matrix $\Qbf$
+defined in \eqref{eq:Q}, which is the projection matrix into the hyperplane
+orthogonal to $\onebf$.  Let $H$ denote this hyperplane.  Then $A_{N-1}^*$
+consists of the lattice points in $\ints^N$ projected orthogonally onto $H$.
+That is,
+\[
+A_{N-1}^* = \left\{ \Qbf\wbf \mid \wbf \in \ints^N \right\}.
+\]
+%It is easy to see that
+%\begin{equation} \label{eq:VorAn*subsetvorZn}
+%\vor(A_{N-1}^*) \cap H \subset \vor(\ints^N)
+%\end{equation}
+
+Another way of representing $A_{N-1}^*$ is as a union of $N$ translates of its dual lattice $A_{N-1} = \ints^{N} \cap H$ \cite{SPLAG}.  That is,
+\begin{align}
+  A_{N-1}^* &= \bigcup_{i=0}^{n-1} \left( [i] + A_{N-1} \right) \nonumber \\
+  					&= \bigcup_{i=0}^{n-1} \left( [i] + \ints^N \right) \bigcap H \\
+            &\subset \bigcup_{i=0}^{n-1} \left( [i] + \ints^N \right),\label{eq:An*asglues}
+\end{align}
+where the $[i]$ are known as \emph{glue vectors} and are defined in
+this case as
+\begin{equation} \label{eq:Anglues}
+  [i] = \frac{1}{N} \big[ \underbrace{i, \dots, i}_{\text{$j$ times}},
+        \underbrace{-j, \dots, -j}_{\text{$i$ times}}
+  \big]
+\end{equation}
+for $i = 0,1, \dots, N-1$ with $i+j = N$ \cite[pp. 109]{SPLAG}.
+
+There exists a fast algorithm to find the points in the set
+\[
+K(i) = \left\{ \NP(\zbf - f\gbf, [i] + \ints^N) \mid f \in [-\nicefrac{1}{2},\nicefrac{1}{2}) \right\}
+\]
+due to Ryan \emph{et al.} \cite{Ryan2007, McKilliam2007}.  We use this algorithm for each $i = 0,1,\dots,N-1$. Let
+\begin{equation} \label{eq:S+}
+S^+ = \bigcup_{i=0}^{n-1} K(i).
+\end{equation}
+
+The proof of the following lemma is not difficult and is omitted.
+
+\begin{lemma} \label{lem:minSS+equal}
+\[
+\Qbf\hat{\ubf} = \arg\min_{\zetabf \in S} h(\zetabf) = \arg\min_{\zetabf \in S^+} h(\zetabf).
+\]
+\end{lemma}
+
+It is thus sufficient to use the set $S^+$ rather than $S$ to find the nearest lattice point.  Since $S^+$ is the union of the $K(i)$,
+\[
+\Qbf\hat{\ubf} = \arg\min_{\zetabf \in K(i)}\min_{i=0,1,\dots,N-1} h(\zetabf).
+\]
+For each $i$ the minimisation can be computed using the algorithm in \cite{Ryan2007, McKilliam2007}.  The number of operations required is $O(\#S^+\log{N})$.
+
+\begin{lemma} \label{lem:sizeK=O(N^2)}
+For $i=0,1,\dots,N$
+\[
+\#K(i) = O(N^2).
+\]
+\end{lemma}
+\begin{IEEEproof}
+The `first' lattice point in $K(i)$ corresponds to $f = -\nicefrac{1}{2}$, and is given by
+\[
+\vbf = \round{\zbf + \frac{\gbf}{2} - [i]} + [i],
+\]
+while the `last' lattice point in $K(i)$ corresponds to $f = \nicefrac{1}{2}$, and is given by
+\[
+\wbf = \round{\zbf - \frac{\gbf}{2} - [i]} + [i].
+\]
+Consecutive elements in $K(i)$ satisfy the equation
+\[
+\vbf_{\text{next}} = \vbf_{\text{previous}} + \sign{g_j}\ebf_j 
+\]
+for some $j$, where $\ebf_j$ is a vector conistsing of zeros apart from a one in the $j$th position and $\sign{g_j}$ is $1$ if $g_j > 0$, $-1$ if $g_j < 0$ and $0$ if $g_j = 0$.  Thus
+\[
+\#K(i) = \sum_{n=1}^N |v_n - w_n| \leq \sum_{n=1}^N |w_n| + |v_n|.
+\]
+Since $z_n$ and $[i]_n \in [-\nicefrac{1}{2}, \nicefrac{1}{2})$, and $|g_n| \leq N$, $|v_n|,|w_n| \leq N+2$ for all $n=1,2,\dots,N$.  Hence
+\[
+\#K(i) \leq \sum_{n=1}^N{ \left(2N + 4\right) } = O(N^2).
+\] 
+\end{IEEEproof}
+
+As a consequence of the lemma, $\#S^+ = O(N^3)$ and the algorithm requires $O(N^3\log{N})$ arithmetic operations. 
+
+
+% \begin{algorithm} \label{alg:ON^3logN}
+% \SetAlCapFnt{\small}
+% \SetAlTitleFnt{}
+% \dontprintsemicolon
+% $\zbf = \Qbf\ybf$ \;
+% $\gbf = \Qbf\nbf$ \;
+% $D = \infty$ \;
+% \For{$i = 0$ \emph{\textbf{to}} $n-1$}{ 
+% 	$\vbf = \round{\zbf - [i]} + [i]$\;
+% 	\For{$t = 1$ \emph{\textbf{to}} $n$ \nllabel{alg:alg_for_glue}}{
+% 		\If{$g_t \neq 0$}{
+% 			$f^* = \frac{z_t - v_t + 0.5\sign{g_t}}{g_t}$ \;
+% 			$\operatorname{AddToSortedList}(f^*, t)$ \;
+% 		}
+% 	}
+% 	$\alpha = \gbf'(\vbf - \zbf)$ \;
+% 	$\beta = \|\zbf - \vbf\|^2$ \;
+% 	$\gamma = \|\gbf\|^2$ \;
+% 	$f = \frac{\gbf'(\zbf - \vbf)}{\gbf'\gbf}$ \;
+% \While{$f < 1$ \nllabel{alg:whilef<1}}{
+% 	$h =  \beta + 2f\alpha + f^2\gamma$ \;\
+% 	\If{$h < D$ \nllabel{snpe:alg:alg_ifL}}{
+% 		$D = h$ \;
+% 		$\hat{f} = f$ \;
+% 	}
+% 	$t = \operatorname{RemoveFirstFromSortedList}$ \;
+% 	$\alpha = \alpha - |g_{t}|$ \;
+% 	$\beta = \beta + 2\sign{g_{t}} \left( z_{t} - v_{t} \right) + 1$\;
+% 	$f = f + \frac{|g_{t}|}{\|\gbf\|^2}$ \;
+% 	$v_{t} = v_{t} - \sign{g_t}$\; 
+% 	$f^* = \frac{z_t - v_t + 0.5\sign{g_t}}{g_t}$ \;
+% 	$\operatorname{AddToSortedList}(f^*, t)$ \;
+% 	}
+% }
+% $(\zetabf, \hat{\ubf}) = \NP(\zbf - \hat{f}\gbf, A_{N-1}^*)$ \;
+% \Return{$(\Bbf\hat{\ubf}, \hat{\ubf})$ \nllabel{snpe:alg:alg_returnT}}
+% \caption{$O(N^3\log{N})$ algorithm to find the nearest lattice point}
+% \end{algorithm}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "lsuwrapping.tex"
+%%% End:

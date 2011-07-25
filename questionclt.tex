@@ -1,0 +1,154 @@
+\documentclass{article}
+
+\usepackage{ifpdf}
+\ifpdf
+  \usepackage[pdftex]{graphicx}
+  \usepackage{thumbpdf}
+  \usepackage[naturalnames]{hyperref}
+  \DeclareGraphicsRule{*}{mps}{*}{}
+\else
+	\usepackage{graphicx}
+\fi
+\usepackage{bm, booktabs}
+\usepackage{amsmath}%
+\usepackage{amsfonts}%
+\usepackage{amssymb}%
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+%\usepackage{graphicx}
+%\usepackage{setspace}
+\usepackage{cite}
+%\usepackage{times}
+\usepackage[normalem]{ulem}
+%\usepackage{algorithmic}
+%\usepackage[figure, vlined, linesnumbered]{algorithm2e}
+\usepackage[vlined, linesnumbered]{algorithm2e}
+%\usepackage{algorithm}
+\usepackage{units}
+
+\newcommand{\round}[1]{\lfloor #1 \rceil}
+\newcommand{\floor}[1]{\lfloor #1 \rfloor}
+\newcommand{\ceil}[1]{\lceil #1 \rceil}
+\newcommand{\reals}{{\mathbb R}}
+\newcommand{\ints}{{\mathbb Z}}
+\newcommand{\integers}{{\mathbb Z}}
+\newcommand{\uy}{\underline{\bm{Y}}}
+\newcommand{\uey}{\underline{Y}}
+\newcommand{\sign}[1]{\mathtt{sign}(#1)}
+\newcommand{\Qbf}{{\mathbf Q}}
+\newcommand{\Bbf}{{\mathbf B}}
+\newcommand{\Ibf}{{\mathbf I}}
+\newcommand{\ybf}{{\mathbf y}}
+\newcommand{\xbf}{{\mathbf x}}
+\newcommand{\zbf}{{\mathbf z}}
+\newcommand{\ebf}{{\mathbf e}}
+\newcommand{\vbf}{{\mathbf v}}
+\newcommand{\wbf}{{\mathbf w}}
+\newcommand{\kbf}{{\mathbf k}}
+\newcommand{\sbf}{{\mathbf s}}
+\newcommand{\Pibf}{{\mathbf \Pi}}
+\newcommand{\onebf}{{\mathbf 1}}
+\newcommand{\fbf}{{\mathbf f}}
+\newcommand{\ubf}{{\mathbf u}}
+
+\newtheorem{theorem}{Theorem}
+%\theoremstyle{plain}
+\newtheorem{acknowledgement}{Acknowledgement}
+%\newtheorem{algorithm}{Algorithm}
+\newtheorem{axiom}{Axiom}
+\newtheorem{case}{Case}
+\newtheorem{claim}{Claim}
+\newtheorem{conclusion}{Conclusion}
+\newtheorem{condition}{Condition}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{corollary}{Corollary}
+\newtheorem{criterion}{Criterion}
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Exercise}
+\newtheorem{lemma}{Lemma}
+\newtheorem{notation}{Notation}
+\newtheorem{problem}{Problem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+\newtheorem{solution}{Solution}
+\newtheorem{summary}{Summary}
+
+\newcommand{\vol}{\operatorname{vol}}
+\newcommand{\vor}{\operatorname{Vor}}
+
+\begin{document}
+
+In the proof of the CLT we find that
+$
+N^{1/2}\left[\begin{array} 
+[c]{c}%
+\psi_{N}\\
+\phi_{N}%
+\end{array}
+\right]
+$
+is normally distributed with mean 0 and covariance matrix
+\[
+\frac{12\sigma^{2}}{\left(  1-h  \right)  ^{2}}\left[
+\begin{array}
+[c]{cc}%
+1 & -1/2\\
+-1/2 & 1/3
+\end{array}
+\right] = \mathbf{M}
+\]
+and therefore
+$
+\left[\begin{array} 
+[c]{c}%
+\psi_{N}\\
+\phi_{N}%
+\end{array}
+\right]
+$
+is normally distributed with mean 0 and covariance matrix $N^{-1}\mathbf{M}$. We then show that
+\[
+\left[
+\begin{array}
+[c]{c}%
+\psi\\
+\phi
+\end{array}
+\right]  =\left[
+\begin{array} 
+[c]{c}%
+\psi_{N}\\
+\phi_{N}%
+\end{array}
+\right]  \left(  1+o_{P}\left(  1\right)  \right)  .
+\]
+and because convergence in probability implies convergence in distribution it follows that $\left[
+\begin{array}
+[c]{c}%
+\psi\\
+\phi
+\end{array}
+\right]$
+is normally distributed with covariance matrix $N^{-1}\mathbf{M}$.  However, we do not show that
+$N^{1/2}\left[\begin{array}
+[c]{c}%
+\psi\\
+\phi
+\end{array}
+\right]$
+converges to $N^{1/2}\left[
+\begin{array} 
+[c]{c}%
+\psi_{N}\\
+\phi_{N}%
+\end{array}
+\right]$
+in probability and therefore cannot say that $N^{1/2}\left[\begin{array}
+[c]{c}%
+\psi\\
+\phi
+\end{array}
+\right]$ is normally distributed with mean 0 and covariance $\mathbf{M}$.
+
+\end{document}
