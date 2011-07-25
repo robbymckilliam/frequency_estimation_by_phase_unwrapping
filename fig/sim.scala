@@ -46,7 +46,7 @@ for(N <- Ns ){
 
   for(est <- ests){
     val efname = est.getClass.getSimpleName + "" + N
-    val efile = new java.io.FileWriter(Tfname)
+    val efile = new java.io.FileWriter(efname)
 
     println("snr \t mse")
     val starttime = (new java.util.Date).getTime
@@ -65,11 +65,11 @@ for(N <- Ns ){
       
       val mse = msetotal/iters
       println(snr  + "\t" + mse.toString.replace('E', 'e'))
-      Tfile.write(snr + "\t" + mse.toString.replace('E', 'e') + "\n")
+      efile.write(snr + "\t" + mse.toString.replace('E', 'e') + "\n")
     }
     val runtime = (new java.util.Date).getTime - starttime
     println(est.getClass.getSimpleName + " with N = " + N + " finished in " + (runtime/1000.0) + " seconds.\n") 
-    Tfile.close
+    efile.close
 
   }
 
