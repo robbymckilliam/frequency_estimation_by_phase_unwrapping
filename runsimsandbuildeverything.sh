@@ -7,5 +7,6 @@ cd ..
 pdflatex lsuwrapping.tex
 pdflatex lsuwrapping.tex
 bibtex lsuwrapping.tex
+pdflatex lsuwrapping.tex
 bibtex lsuwrapping.tex
 pdflatex lsuwrapping.tex
