@@ -1,9 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-package pubsim.fes;
+package fes;
 
 import static org.junit.Assert.assertEquals;
 import org.junit.*;
