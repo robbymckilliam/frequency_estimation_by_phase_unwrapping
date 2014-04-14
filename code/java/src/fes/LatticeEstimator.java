@@ -1,6 +1,5 @@
 package fes;
 
-import Jama.Matrix;
 import pubsim.lattices.Vn1Star.Vn1Star;
 
 /**
@@ -22,7 +21,7 @@ public abstract class LatticeEstimator implements FrequencyEstimator{
         y = new double[N];
     }
 
-        /** Run the estimator on received data, @param y */
+    /** Run the estimator on received data */
     @Override
     public double estimateFreq(double[] real, double[] imag){
         for(int i = 0; i < real.length; i++)
