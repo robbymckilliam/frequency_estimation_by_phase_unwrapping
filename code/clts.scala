@@ -1,33 +1,33 @@
-import pubsim.fes.bounds.GaussianCRB
-import pubsim.fes.bounds.AngularLeastSquaresCLT
+import fes.bounds.GaussianCRB
+import fes.bounds.AngularLeastSquaresCLT
 import pubsim.distributions.circular.ProjectedNormalDistribution
 
 val Ns = List(16,64,256,512,1024)  //number of observations
-val snrs = Range(-20, 21, 2) //range of signal to noise ratios
+val snrs = -20.0 to 21.0 by 0.4 //range of signal to noise ratios
 
 for(N <- Ns){  
   
-  val aslfile = new java.io.FileWriter("asymp" + N + ".txt")
-  val crbfile = new java.io.FileWriter("crb" + N + ".txt")
+  val aslfile = new java.io.FileWriter("data/asymp" + N + ".txt")
+  val crbfile = new java.io.FileWriter("data/crb" + N + ".txt")
   
-  println("snr \t unwrapping CLT with N = " + N)
+  print("unwrapping CLT N = " + N + " ")
   for(snr <- snrs){
     val v = 0.5/scala.math.pow(10, snr/10.0)
     val mse = new AngularLeastSquaresCLT(new ProjectedNormalDistribution(0,v)).getBound(N)
     aslfile.write(snr + "\t" + mse.toString.replace('E', 'e') + "\n")
-    println(snr  + "\t" + mse.toString.replace('E', 'e'))
+    print(".")
   }
   aslfile.close
- 
-  println
-  println("snr \t Gaussian CRB with N = " + N)
+  println(" finished.")
+
+  print("Gaussian CRB N = " + N + " ")
   for(snr <- snrs){
     val v = 0.5/scala.math.pow(10, snr/10.0)
     val mse = GaussianCRB.getBound(v, N)
     crbfile.write(snr + "\t" + mse.toString.replace('E', 'e') + "\n")
-    println(snr  + "\t" + mse.toString.replace('E', 'e'))
+    print(".")
   }
   crbfile.close
-  println
+  println(" finished.")
 
 }

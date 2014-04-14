@@ -5,13 +5,13 @@ import pubsim.distributions.circular.CircularRandomVariable
 import pubsim.distributions.circular.WrappedUniform
 import pubsim.distributions.circular.WrappedGaussian
 import pubsim.distributions.GaussianNoise
-import pubsim.fes.NoisyComplexSinusoid
-import pubsim.fes.SamplingLatticeEstimator
-import pubsim.fes.ZnLLS
-import pubsim.fes.PeriodogramFFTEstimator
-import pubsim.fes.PSCFDEstimator
-import pubsim.fes.KaysEstimator
-import pubsim.fes.QuinnFernades
+import fes.NoisyComplexSinusoid
+import fes.SamplingLatticeEstimator
+import fes.ZnLLS
+import fes.PeriodogramFFTEstimator
+import fes.PSCFDEstimator
+import fes.KaysEstimator
+import fes.QuinnFernades
 import pubsim.Util._
 
 //function returns a tuple with random frequency in the interval [-0.5,0.5]^2 
@@ -24,11 +24,9 @@ val Ns = List(16,64,256,512,1024) //number of observations
 val iters = 1000 //number of iterations to run for each variance
 
 //range of signal to noise ratios
-val snrs = Range(-20, 21, 2)
+val snrs = -20.0 to 21.0 by 2.0
 
 for(N <- Ns ){
-
-  val siggen =  new NoisyComplexSinusoid(N) //noisy single frequency signal generated with complex noise
 
   //list of estimators we will simulate
   val ests = List(
@@ -36,24 +34,25 @@ for(N <- Ns ){
     //it's too slow for these simulations so we use the approximate SamplingLatticeEstimator instead
     //in practice the performance between these is indistinguishable.  This SamplingLatticeEstimator
     //is still VERY slow compared to the other estimators!
-    //new ZnLLS(N) 
-    new SamplingLatticeEstimator(N, 12*N),
-    new PeriodogramFFTEstimator(N),
-    new PSCFDEstimator(N),
-    new KaysEstimator(N),
-    new QuinnFernades(N)
+    //() => new ZnLLS(N) 
+    () => new SamplingLatticeEstimator(N, 12*N),
+    () => new PeriodogramFFTEstimator(N),
+    () => new PSCFDEstimator(N),
+    () => new KaysEstimator(N),
+    () => new QuinnFernades(N)
   )
 
-  for(est <- ests){
-    val efname = est.getClass.getSimpleName + "" + N
-    val efile = new java.io.FileWriter(efname)
-
-    println("snr \t mse")
+  for(estf <- ests){
+    val ename = estf().getClass.getSimpleName
+    print(ename + " N = " + N + " ")
     val starttime = (new java.util.Date).getTime
-    for(snr <- snrs){      
+
+    //run for each snr in parallel threads
+    val mselist = snrs.par.map{ snr =>       
+      val siggen =  new NoisyComplexSinusoid(N) //noisy single frequency signal generated with complex noise
       siggen.setNoiseGenerator( new GaussianNoise(0, 0.5/scala.math.pow(10, snr/10.0)) )
-      
-      //compute the mses
+      val est = estf() //construct an estimator
+      //compute the mse
       val msetotal = (1 to iters).map{ i => 
 	val (f, p) = randparams
 	siggen.setFrequency(f)
@@ -61,16 +60,19 @@ for(N <- Ns ){
 	siggen.generateReceivedSignal
 	val fhat:Double = est.estimateFreq(siggen.getReal, siggen.getImag)
 	fracpart(fhat - f)*fracpart(fhat - f)
-      }.foldLeft(0.0)( _ + _)
-      
-      val mse = msetotal/iters
-      println(snr  + "\t" + mse.toString.replace('E', 'e'))
+      }.foldLeft(0.0)(_+ _)
+      print(".")   
+      msetotal/iters //return mean square error
+    }.toList
+
+    val efile = new java.io.FileWriter("data/" + ename + "" + N)
+    (mselist, snrs).zipped.map{ (mse, snr) => 
       efile.write(snr + "\t" + mse.toString.replace('E', 'e') + "\n")
     }
-    val runtime = (new java.util.Date).getTime - starttime
-    println(est.getClass.getSimpleName + " with N = " + N + " finished in " + (runtime/1000.0) + " seconds.\n") 
     efile.close
 
+    val runtime = (new java.util.Date).getTime - starttime
+    println(" finished in " + (runtime/1000.0) + " seconds.") 
   }
 
 }
