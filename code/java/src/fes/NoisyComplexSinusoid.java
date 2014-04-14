@@ -4,7 +4,7 @@
  * Created on 9 August 2007, 12:00
  */
 
-package pubsim.fes;
+package fes;
 
 import pubsim.SignalGenerator;
 import pubsim.distributions.NoiseGenerator;

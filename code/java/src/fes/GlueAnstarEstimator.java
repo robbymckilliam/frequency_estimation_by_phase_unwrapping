@@ -4,7 +4,7 @@
  * Created on 12 August 2007, 12:28
  */
 
-package pubsim.fes;
+package fes;
 
 import pubsim.lattices.Vn1Star.Vn1StarGlued;
 

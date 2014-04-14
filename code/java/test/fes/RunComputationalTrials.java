@@ -1,8 +1,5 @@
 package fes;
 
-import pubsim.fes.NoisyComplexSinusoid;
-import pubsim.fes.ZnLLS;
-import pubsim.fes.FrequencyEstimator;
 import pubsim.distributions.GaussianNoise;
 import pubsim.distributions.RealRandomVariable;
 import java.util.Iterator;

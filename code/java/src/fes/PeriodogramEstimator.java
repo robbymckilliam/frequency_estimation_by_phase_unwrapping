@@ -4,7 +4,7 @@
  * Created on 12 August 2007, 12:12
  */
 
-package pubsim.fes;
+package fes;
 
 /**
  * Periodogram Estimator for frequency. This uses a slow O(N^2) Fourier

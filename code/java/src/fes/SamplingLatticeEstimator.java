@@ -4,7 +4,7 @@
  * Created on 18 August 2007, 12:47
  */
 
-package pubsim.fes;
+package fes;
 import pubsim.lattices.Vn1Star.Vn1StarSampled;
 
 /**

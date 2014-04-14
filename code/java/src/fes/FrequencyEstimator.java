@@ -4,7 +4,7 @@
  * Created on 12 August 2007, 12:08
  */
 
-package pubsim.fes;
+package fes;
 
 /**
  * Interface that describes the functions of a

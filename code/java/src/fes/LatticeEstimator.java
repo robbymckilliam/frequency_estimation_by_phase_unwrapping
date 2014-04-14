@@ -1,9 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-package pubsim.fes;
+package fes;
 
 import Jama.Matrix;
 import pubsim.lattices.Vn1Star.Vn1Star;

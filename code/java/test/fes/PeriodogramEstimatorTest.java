@@ -5,15 +5,13 @@
  * Created on 15 August 2007, 16:05
  */
 
-package pubsim.fes;
+package fes;
 
-import pubsim.fes.PeriodogramEstimator;
-import pubsim.fes.NoisyComplexSinusoid;
 import junit.framework.*;
 
 /**
  *
- * @author Robby
+ * @author Robby McKilliam
  */
 public class PeriodogramEstimatorTest extends TestCase {
     

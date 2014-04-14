@@ -5,15 +5,13 @@
  * Created on 16 August 2007, 15:31
  */
 
-package pubsim.fes;
+package fes;
 
-import pubsim.fes.GlueAnstarEstimator;
-import pubsim.fes.NoisyComplexSinusoid;
 import junit.framework.*;
 
 /**
  *
- * @author Robby
+ * @author Robby McKilliam
  */
 public class GlueAnstarEstimatorTest extends TestCase {
     

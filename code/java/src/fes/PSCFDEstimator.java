@@ -4,7 +4,7 @@
  * Created on 11 September 2007, 08:51
  */
 
-package pubsim.fes;
+package fes;
 
 /**
  * The Parabolic Smoothed Central Finite Difference Estimator

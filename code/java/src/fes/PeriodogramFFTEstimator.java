@@ -1,6 +1,4 @@
-/*
- */
-package pubsim.fes;
+package fes;
 
 import flanagan.complex.Complex;
 import flanagan.math.FourierTransform;

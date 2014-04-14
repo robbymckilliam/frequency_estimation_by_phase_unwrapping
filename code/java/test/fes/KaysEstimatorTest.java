@@ -1,12 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+package fes;
 
-package pubsim.fes;
-
-import pubsim.fes.NoisyComplexSinusoid;
-import pubsim.fes.KaysEstimator;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -16,7 +9,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author robertm
+ * @author Robby McKilliam
  */
 public class KaysEstimatorTest {
 
