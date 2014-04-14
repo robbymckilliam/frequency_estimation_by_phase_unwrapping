@@ -4,11 +4,11 @@ R. G. McKilliam, Barry G. Quinn, I. V. L. Clarkson, and Bill Moran. Frequency es
 
 Simulation data already exists in this repository (the same data as used in the paper).  If you are using bash then
 
-sh buildfigsandpdf.sh
+bash build.sh
 
-will build the pdf using this data.  The output pdf is called lsuwrapping.pdf.  If you want to run all the simulations again use
+will build the pdf using this data.  The output pdf is called lsuwrapping.pdf.  The code/ directory contains the source code and simulation scripts.
 
-sh runsimsandbuildeverything.sh
+bash runsim.sh
 
-You need a working java jvm and also Scala 2.8 or higher installed.  Depending on your machine this might take a while.  Probably a day or so because the least squares unwrapping estimator is quite slow.  Open up the bash script and work backwards to get at the code.
+will run the simulations and regenerate data for the paper.  You need a working java jvm and also Scala 2.10.x or higher installed.  Depending on your machine this might take a while.  Probably a day or so because the least squares unwrapping estimator is quite slow.  Open up the bash script and work backwards to get at the code.
 
