@@ -1,4 +1,10 @@
 prologues := 2;
+filenametemplate "%j-%c.mps";
+input TEX; 
+TEXPRE("%&latex" & char(10) & 
+"\documentclass{minimal}\begin{document}"); 
+TEXPOST("\end{document}"); 
+
 input graph;
 input sarith;
 
